@@ -1,186 +1,162 @@
-
 #include <Servo.h>
 #include "Timer.h"
 
-Timer timer;
+int test_angles_1[4] = {30, 45, 60, 90};
+int test_angles_2[6] = {-60, -45, -30, 30, 45, 60};
+int start_0 = 0;
+int start_90 = 90;
+unsigned int time_var = 0;
+
+int i=0;
+int j=0; 
 
 Servo my_servo;
-int servo_angle;
-int total_time;
-char buf[80];
-int random_angles[10];
-int random_delay[10];
+Timer my_timer(MICROS);
 
-int servo_test_ready = 4;
-int servo_data_ready = 5;
-int encoder_test_ready = 7;
-int encoder_data_ready = 8;
+void test_1()
+{
+  // Print Number of Test
+  Serial.print("Test_1 no. ");
+  Serial.print(i+1);
+  Serial.print(".");
+  Serial.print(j);
+  Serial.println(" ");
+  // Print Test Angle 
+  Serial.print("Test angle: ");
+  Serial.println(test_angles_1[i]);
+  // Execute Test
+  my_timer.start();
+  my_servo.write(test_angles_1[i]); 
+  delay(2000);
+  time_var = my_timer.read();
+  my_servo.write(start_0);
+  delay(1500);
 
+   // Print Execution Time
+  Serial.print("Execution time: ");
+  Serial.println(time_var);
+  my_timer.stop();
 
-int test_angles[7] = { 30, 45, 60, 90, 120, 135, 180 };
-int random_test_1[13] = { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1500, 2000 };
-int random_test_2[10] = { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+  // Handle Counters 
+  j++;
+  if(j>=1)
+  {
+    i++; 
+    j = 0;
+  }
 
-#define readEncoder_data bitRead(PIND, encoder_data_ready)
-#define readEncoder_test bitRead(PIND, encoder_test_ready)
-// test
-void standard_test(int tst_angle, int test_no);
-void all_random_test(int min_pause, int max_pause, int test_no);
-void rnd_angles_const_delay(int pause_time, int test_no);
-// untily function
-void printDouble(double val, unsigned int precision);
-int readline(int readch, char *buffer, int len);
+  if(i>=4)
+  {
+    Serial.println("The end of test");
+  }
+}
 
+void test_2()
+{
+  int angle;
+  angle = start_90 + test_angles_2[i];
+  // Print Number of Test
+  Serial.print("Test_2 no. ");
+  Serial.print(i+1);
+  Serial.print(".");
+  Serial.print(j);
+  Serial.println(" ");
+  // Print Test Angle 
+  Serial.print("Test angle: ");
+  Serial.println(test_angles_2[i]);
+  // Execute Test
+  my_timer.start();
+  my_servo.write(angle);
+  delay(2000);
+  time_var = my_timer.read();
+  my_servo.write(start_90);
+  delay(1500);
+  
+  // Print Execution Time
+  Serial.print("Execution time: ");
+  Serial.println(time_var);
+  my_timer.stop();
 
+  // Handle Counters 
+  j++;
+  if(j>=5)
+  {
+    i++; 
+    j = 0;
+  }
+  
+  if(i>=6)
+  {
+    Serial.println("The end of test");
+  }
 
+}
 
+void test_3()
+{
+  int random_angles[6];
+  int random_delay[6];
+  // Print Number of Test
+  Serial.print("Test_3 no. ");
+  Serial.print(i+1);
+  Serial.println(" ");
+
+  for(j=0;j<6;j++)
+  {
+    random_angles[j] = start_90 + random(-45, 45);
+    random_delay[j] = random(0, 1000);
+  }
+
+  // Execute Test
+  my_timer.start();
+  for(j=0;j<6;j++)
+  {
+    my_servo.write(random_angles[j]);
+    delay(random_delay[j]);
+  }
+  my_servo.write(start_90);
+  delay(500);
+  time_var = my_timer.read();
+
+  // Print Execution Time, Angles and Delays
+  for(j=0;j<6;j++)
+  {
+    Serial.print("Angle_");
+    Serial.print(j);
+    Serial.print(": ");
+    Serial.println(random_angles[j]);
+    Serial.print("Delay_");
+    Serial.print(j);
+    Serial.print(": ");
+    Serial.println(random_delay[j]);
+  }
+  Serial.print("Execution_time: ");
+  Serial.println(time_var);
+  my_timer.stop();
+  
+  // Handle Counters 
+  i++;
+}
 void setup() {
+  // put your setup code here, to run once:
   Serial.begin(115200);
-  my_servo.attach(6, 500, 3000);
-  my_servo.write(0);
-  pinMode(servo_test_ready, OUTPUT);
-  pinMode(servo_data_ready, OUTPUT);
-  pinMode(encoder_test_ready, INPUT);
-  pinMode(encoder_data_ready, INPUT);
+  pinMode(2, INPUT_PULLUP);
+  pinMode(5, OUTPUT);
+  my_servo.attach(7, 580, 2420);
+  my_servo.write(start_0);
+  // attachInterrupt(digitalPinToInterrupt(2), test_1, FALLING);
 }
 
 void loop() {
-  // Standard test
-  for (int i = 0; i < 7; i++) {
-    standard_test(test_angles[i], i);
+  // put your main code here, to run repeatedly:
+  if(digitalRead(2))
+  {
+    digitalWrite(5, HIGH);
   }
-  // Random angles constant delay
-  for (int i = 0; i < 13; i++) {
-    rnd_angles_const_delay(random_test_1[i], i);
-  }
-
-  for (int i = 0; i < 10; i++) {
-    all_random_test(0, random_test_2[i], i);
-  }
-}
-
-// Test functions
-void standard_test(int tst_angle, int test_no) {
-  for (int i = 0; i < 1; i++) {
-    digitalWrite(servo_test_ready, HIGH);       // Sending to Encoder Arduino that it is ready to start test
-    if (readEncoder_test && !readEncoder_data)  // Waiting Encoder Arduino to finish with data transfer and to be ready for test
-    {
-      //Test time
-      timer.start();
-      my_servo.write(tst_angle);
-      total_time = timer.read();
-      timer.stop();
-
-      digitalWrite(servo_test_ready, LOW);        // Sending to Encoder Arduino that test is finished
-      digitalWrite(servo_data_ready, HIGH);       // Sending to Encoder Arduino that it is ready for data transfer
-      if (readEncoder_data && !readEncoder_test)  // Waiting Encoder Arduino to say it is ready for data transfer
-      {
-        // Data transfer
-        Serial.print("Standard test: ");
-        Serial.print(test_no);
-        Serial.print(".");
-        Serial.println(i);
-        Serial.print("Test angle: ");
-        Serial.println(tst_angle);
-        Serial.print("Total time: ");
-        Serial.println(total_time);
-        my_servo.write(0);
-        delay(1000);
-        digitalWrite(servo_data_ready, LOW);  // Sending to Encoder Arduino that data transfer is finished
-      }
-    }
-  }
-}
-
-void all_random_test(int min_pause, int max_pause, int test_no) {
-  int pause_time;
-  for (int i = 0; i < 5; i++) {
-    digitalWrite(servo_test_ready, HIGH);       // Sending to Encoder Arduino that it is ready to start test
-    if (readEncoder_test && !readEncoder_data)  // Waiting Encoder Arduino to finish with data transfer and to be ready for test
-    {
-      // Test
-      timer.start();
-      for (int j = 0; j < 10; j++) {
-        servo_angle = random(0, 180);               // Pick random angle
-        pause_time = random(min_pause, max_pause);  // Pick random delay
-
-        my_servo.write(servo_angle);
-
-        random_angles[j] = servo_angle;  // Save angle
-        random_delay[j] = pause_time;    // Save delay
-        delay(pause_time);
-      }
-      total_time = timer.read();
-      timer.stop();
-
-      digitalWrite(servo_test_ready, LOW);        // Sending to Encoder Arduino that test is finished
-      digitalWrite(servo_data_ready, HIGH);       // Sending to Encoder Arduino that it is ready for data transfer
-      if (readEncoder_data && !readEncoder_test)  // Waiting Encoder Arduino to say it is ready for data transfer
-      {
-        // Data transfer
-        Serial.print("All random test: ");
-        Serial.print(test_no);
-        Serial.print(".");
-        Serial.println(i);
-        for (int i = 0; i < 10; i++) {
-          Serial.print("Test random angle_");
-          Serial.print(i);
-          Serial.print(": ");
-          Serial.println(random_angles[i]);
-          Serial.print("Test random delay_");
-          Serial.print(i);
-          Serial.print(": ");
-          Serial.println(random_delay[i]);
-        }
-        Serial.print("Total time: ");
-        Serial.println(total_time);
-        my_servo.write(0);
-        delay(1000);
-        digitalWrite(servo_data_ready, LOW);  // Sending to Encoder Arduino that data transfer is finished
-      }
-    }
-  }
-}
-
-void rnd_angles_const_delay(int pause_time, int test_no) {
-  for (int i = 0; i < 5; i++) {
-    digitalWrite(servo_test_ready, HIGH);       // Sending to Encoder Arduino that it is ready to start test
-    if (readEncoder_test && !readEncoder_data)  // Waiting Encoder Arduino to finish with data transfer and to be ready for test
-    {
-      // Test
-      timer.start();
-      for (int j = 0; j < 10; j++) {
-        servo_angle = random(0, 180);  // Pick random angle
-        my_servo.write(servo_angle);
-        random_angles[j] = servo_angle;  // Save angle
-        random_delay[j] = pause_time;    // Save delay
-        delay(pause_time);
-      }
-      total_time = timer.read();
-      timer.stop();
-      digitalWrite(servo_test_ready, LOW);        // Sending to Encoder Arduino that test is finished
-      digitalWrite(servo_data_ready, HIGH);       // Sending to Encoder Arduino that it is ready for data transfer
-      if (readEncoder_data && !readEncoder_test)  // Waiting Encoder Arduino to say it is ready for data transfer
-      {
-        // Data transfer
-        Serial.print("All random test: ");
-        Serial.print(test_no);
-        Serial.print(".");
-        Serial.println(i);
-        for (int i = 0; i < 10; i++) {
-          Serial.print("Test random angle_");
-          Serial.print(i);
-          Serial.print(": ");
-          Serial.println(random_angles[i]);
-        }
-        Serial.print("Test constant delay");
-        Serial.println(pause_time);
-        Serial.print("Total time: ");
-        Serial.println(total_time);
-        my_servo.write(0);
-        delay(1000);
-        digitalWrite(servo_data_ready, LOW);  // Sending to Encoder Arduino that data transfer is finished
-      }
-    }
+  else
+  {
+    delay(1500);
+    digitalWrite(5, LOW);
+    test_1();
   }
 }
