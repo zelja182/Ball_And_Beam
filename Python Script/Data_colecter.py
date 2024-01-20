@@ -13,7 +13,11 @@ while True:
     data = data.decode("utf-8")  
     try:
         if data.startswith("The end of test"):
-            print(data_array)
+            with open("./Python Script/Data_Colection/Test_input_data.txt", "w") as file:
+                print(data)
+                for d in data_array:
+                    file.write(d)
+                print("Data saved...")
         elif data:
             print(data)
             data_array.append(data)            

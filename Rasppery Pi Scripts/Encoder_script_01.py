@@ -33,7 +33,6 @@ def collect_data():
         time_array.append(t.monotonic_ns() - timer_start)
         count_array.append(count_var)
         
-
 def isA(channel):
     global count_var 
     if GPIO.input(ENCODER_PIN_B) != GPIO.input(ENCODER_PIN_A):
