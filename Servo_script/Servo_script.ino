@@ -153,7 +153,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(2, INPUT_PULLUP);
   pinMode(5, OUTPUT);
-  my_servo.attach(7, 580, 2420);
+  my_servo.attach(7, 1000, 2000);
   my_servo.write(start_0);
   // attachInterrupt(digitalPinToInterrupt(2), test_1, FALLING);
 }

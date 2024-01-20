@@ -1,0 +1,21 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+output_data_path = "./Rasppery_Pi_Scripts/Test_data/Iteration_1/Test_0.json"
+
+df = pd.read_json(output_data_path)
+
+# print(df)
+
+df["Angles"] = df["Counts"]*360.0/600.0
+df["Time_s"] = df["Time"]/1000000000
+
+print(df)
+
+plt.plot(df["Time_s"], df["Angles"])
+plt.grid()
+plt.xlabel("Time [s]")
+plt.ylabel("Angle")
+# plt.
+plt.show()
