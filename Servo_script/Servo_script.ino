@@ -18,6 +18,7 @@ void test_1()
   if(i==4)
   {
     Serial.println("The end of test");
+    i++;
   }
   else if (i<4)
   {
@@ -58,6 +59,7 @@ void test_2()
   if(i==6)
   {
     Serial.println("The end of test");
+    i++;
   }
   else if (i<6)
   {
@@ -100,6 +102,7 @@ void test_3()
   if(i==10)
   {
     Serial.println("The end of test");
+    i++;
   }
   else if (i<10)
   {
@@ -113,7 +116,7 @@ void test_3()
     for(j=0;j<6;j++)
     {
       random_angles[j] = start_90 + random(-45, 45);
-      random_delay[j] = random(0, 1000);
+      random_delay[j] = random(500, 2000);
     }
 
     // Execute Test
@@ -152,9 +155,9 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   pinMode(2, INPUT_PULLUP);
-  pinMode(5, OUTPUT);
-  my_servo.attach(7, 1000, 2000);
-  my_servo.write(start_0);
+  pinMode(7, OUTPUT);
+  my_servo.attach(5);
+  my_servo.write(start_90);
   // attachInterrupt(digitalPinToInterrupt(2), test_1, FALLING);
 }
 
@@ -162,12 +165,12 @@ void loop() {
   // put your main code here, to run repeatedly:
   if(digitalRead(2))
   {
-    digitalWrite(5, HIGH);
+    digitalWrite(7, HIGH);
   }
   else
   {
     delay(1500);
-    digitalWrite(5, LOW);
-    test_1();
+    digitalWrite(7, LOW);
+    test_3();
   }
 }
