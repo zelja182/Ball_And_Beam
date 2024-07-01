@@ -113,6 +113,7 @@ void test_3()
     Serial.print(i+1);
     Serial.println(" ");
 
+    // Generate data for test
     for(j=0;j<6;j++)
     {
       random_angles[j] = start_90 + random(-45, 45);
@@ -133,12 +134,10 @@ void test_3()
     // Print Execution Time, Angles and Delays
     for(j=0;j<6;j++)
     {
-      Serial.print("Angle_");
-      Serial.print(j);
+      Serial.print("angle");
       Serial.print(": ");
       Serial.println(random_angles[j]);
-      Serial.print("Delay_");
-      Serial.print(j);
+      Serial.print("delay");
       Serial.print(": ");
       Serial.println(random_delay[j]);
     }
