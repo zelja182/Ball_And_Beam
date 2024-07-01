@@ -109,15 +109,12 @@ void test_3()
     int random_angles[6];
     int random_delay[6];
     // Print Number of Test
-    Serial.print("Test_3 no. ");
-    Serial.print(i+1);
-    Serial.println(" ");
-
+   
     // Generate data for test
     for(j=0;j<6;j++)
     {
       random_angles[j] = start_90 + random(-45, 45);
-      random_delay[j] = random(500, 2000);
+      random_delay[j] = random(100, 1000);
     }
 
     // Execute Test
@@ -130,6 +127,10 @@ void test_3()
     my_servo.write(start_90);
     delay(500);
     time_var = my_timer.read();
+
+    Serial.print("Test_3 no. ");
+    Serial.print(i+1);
+    Serial.println(" ");
 
     // Print Execution Time, Angles and Delays
     for(j=0;j<6;j++)
@@ -153,9 +154,9 @@ void test_3()
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  pinMode(2, INPUT_PULLUP);
-  pinMode(7, OUTPUT);
-  my_servo.attach(5);
+  pinMode(2, INPUT_PULLUP);  // Button Pin
+  pinMode(7, OUTPUT);        // LED Pin
+  my_servo.attach(5);        // Servo Pin
   my_servo.write(start_90);
   // attachInterrupt(digitalPinToInterrupt(2), test_1, FALLING);
 }

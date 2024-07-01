@@ -4,10 +4,10 @@ import time as t
 import json
 
 
-BUTTON_PIN = 23
-LED_PIN = 14
-channel_A = 20 
-channel_B = 21  
+BUTTON_PIN = 23   # GPIO PIN
+LED_PIN = 14      # GPIO PIN
+channel_A = 20    # GPIO PIN
+channel_B = 21    # GPIO PIN
 
 position = 0 
 position_array = []
