@@ -20,9 +20,9 @@ def import_missing_values(new_angles, new_time):
     return new_angles, new_time
 
 # # Zakomentarisina putevi do direktorijuma za svaki slucaj
-path_raw = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3_delay_0_1000/Raw/"
-path_input = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Input_data/Test_3_1.json"
-path_processed = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3_delay_0_1000/Processed/"
+path_raw = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_30/Raw/"
+path_input = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_30/Input_data.json"
+path_processed = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_30/Processed/"
 
 
 '''
@@ -66,9 +66,7 @@ for i in range(10):
                     df_10["Angles"] = new_angles
                     df_10["Time_s"] = new_time
                     df_10["PWM"] = pwm
-                    del df_0, new_angles, new_time, pwm
-                    df_10.round(decimals=3)     
-                    df_10.to_csv(path_processed + "Test_" + str(idx) + ".csv")
+                    del df_0, new_angles, new_time, pwm  
                 case 1:
                     df_1 = separate_data(data=df, delay_1=delay_sum-delays[idx], delay_2=delay_sum)
                     new_row = {"Angles": df_1["Angles"].iloc[-1], "Time_s": delay_sum/1000}
@@ -80,9 +78,7 @@ for i in range(10):
                     df_11["Angles"] = new_angles
                     df_11["Time_s"] = new_time
                     df_11["PWM"] = pwm
-                    del df_1, new_angles, new_time, pwm
-                    df_11.round(decimals=3)     
-                    df_11.to_csv(path_processed + "Test_" + str(idx) + ".csv")              
+                    del df_1, new_angles, new_time, pwm             
                 case 2:
                     df_2 = separate_data(data=df, delay_1=delay_sum-delays[idx], delay_2=delay_sum)
                     new_row = {"Angles": df_2["Angles"].iloc[-1], "Time_s": delay_sum/1000}
@@ -94,9 +90,7 @@ for i in range(10):
                     df_12["Angles"] = new_angles
                     df_12["Time_s"] = new_time
                     df_12["PWM"] = pwm
-                    del df_2, new_angles, new_time, pwm    
-                    df_12.round(decimals=3)             
-                    df_12.to_csv(path_processed + "Test_" + str(idx) + ".csv")
+                    del df_2, new_angles, new_time, pwm                
                 case 3:
                     df_3 = separate_data(data=df, delay_1=delay_sum-delays[idx], delay_2=delay_sum)
                     new_row = {"Angles": df_3["Angles"].iloc[-1], "Time_s": delay_sum/1000}
@@ -108,9 +102,7 @@ for i in range(10):
                     df_13["Angles"] = new_angles
                     df_13["Time_s"] = new_time
                     df_13["PWM"] = pwm
-                    del df_3, new_angles, new_time, pwm
-                    df_13.round(decimals=3)                    
-                    df_13.to_csv(path_processed + "Test_" + str(idx) + ".csv")    
+                    del df_3, new_angles, new_time, pwm               
                 case 4:
                     df_4 = separate_data(data=df, delay_1=delay_sum-delays[idx], delay_2=delay_sum)
                     new_row = {"Angles": df_4["Angles"].iloc[-1], "Time_s": delay_sum/1000}
@@ -122,9 +114,7 @@ for i in range(10):
                     df_14["Angles"] = new_angles
                     df_14["Time_s"] = new_time
                     df_14["PWM"] = pwm
-                    del df_4, new_angles, new_time, pwm 
-                    df_12.round(decimals=4)          
-                    df_14.to_csv(path_processed + "Test_" + str(idx) + ".csv")              
+                    del df_4, new_angles, new_time, pwm                    
                 case 5:
                     df_5 = separate_data(data=df, delay_1=delay_sum-delays[idx], delay_2=delay_sum)
                     new_row = {"Angles": df_5["Angles"].iloc[-1], "Time_s": delay_sum/1000}
@@ -136,9 +126,7 @@ for i in range(10):
                     df_15["Angles"] = new_angles
                     df_15["Time_s"] = new_time
                     df_15["PWM"] = pwm
-                    del df_5, new_angles, new_time, pwm  
-                    df_15.round(decimals=3)         
-                    df_15.to_csv(path_processed + "Test_" + str(idx) + ".csv")      
+                    del df_5, new_angles, new_time, pwm     
                 case 6:
                     df_6 = separate_data(data=df, delay_1=delay_sum-delays[idx], delay_2=delay_sum)
                     new_row = {"Angles": df_6["Angles"].iloc[-1], "Time_s": delay_sum/1000}
@@ -149,24 +137,21 @@ for i in range(10):
                     df_16["Angles"] = new_angles
                     df_16["Time_s"] = new_time
                     df_16["PWM"] = pwm
-                    del df_6, new_angles, new_time, pwm
-                    df_16.round(decimals=3)     
-                    df_16.to_csv(path_processed + "Test_" + str(idx) + ".csv")
-                
+                    del df_6, new_angles, new_time, pwm                       
         del df
         
         # Making new dataframework 
-        df = pd.concat([df_10, df_11, df_12, df_13, df_14, df_15, df_16], ignore_index=True)
-        df.round(decimals=3)
+        df_new = pd.concat([df_10, df_11, df_12, df_13, df_14, df_15, df_16], ignore_index=True)
+        df_new.round(decimals=3)
         
-        plt.figure(0)
-        plt.plot(df["Time_s"], df["Angles"], df["Time_s"], df["PWM"])
+        plt.figure(i)
+        plt.plot(df_new["Time_s"], df_new["Angles"], df_new["Time_s"], df_new["PWM"])
         plt.grid()
         plt.xlabel("Time [s]")
         plt.ylabel("Angle")
         plt.show()
 
-        df.to_csv(path_processed + "Test_" + str(i) + ".csv")
+        df_new.to_csv(path_processed + "Test_" + str(i) + ".csv")
     except Exception as e:
         print("Something went wrong!!!")
         print(e)

@@ -113,8 +113,10 @@ void test_3()
     // Generate data for test
     for(j=0;j<6;j++)
     {
-      random_angles[j] = start_90 + random(-45, 45);
-      random_delay[j] = random(100, 1000);
+      // random_angles[j] = start_90 + random(-45, 45);
+      // random_angles[j] = start_90 + random(-30, 30);
+      random_angles[j] = start_90 + random(-15, 15);
+      random_delay[j] = random(10, 100) * 10;
     }
 
     // Execute Test
