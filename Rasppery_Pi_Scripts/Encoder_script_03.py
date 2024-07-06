@@ -32,23 +32,20 @@ def var_reset():
     global position_array
     global time_array
     position = 0
-    position_array = []
-    time_array = [] 
+    position_array.clear()
+    time_array.clear()
+    
 
-def collect_data():
+def callback(way): 
     global timer_start 
+    global position
+    position += way
     if len(position_array) == 0:
         timer_start = t.monotonic_ns()
         time_array.append(0)
         position_array.append(position)
     else: 
         time_array.append(t.monotonic_ns() - timer_start)
-        position_array.append(position)
-
-def callback(way): 
-    global position
-    position += way
-    collect_data()
 
 pi = pigpio.pi() 
 decoder = rotary_encoder.decoder(pi, channel_A, channel_B, callback) 
