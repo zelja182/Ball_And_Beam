@@ -11,7 +11,7 @@ angle: 83
 delay: 290
 angle: 60
 delay: 450
-Execution_time: 36996
+Execution_time: 37012
 Test_3 no. 2 
 angle: 72
 delay: 720
@@ -25,7 +25,7 @@ angle: 63
 delay: 290
 angle: 69
 delay: 570
-Execution_time: 36284
+Execution_time: 36288
 Test_3 no. 3 
 angle: 100
 delay: 430
@@ -39,7 +39,7 @@ angle: 92
 delay: 470
 angle: 110
 delay: 730
-Execution_time: 12552
+Execution_time: 12544
 Test_3 no. 4 
 angle: 79
 delay: 290
@@ -53,7 +53,7 @@ angle: 65
 delay: 750
 angle: 68
 delay: 410
-Execution_time: 22380
+Execution_time: 22376
 Test_3 no. 5 
 angle: 114
 delay: 770
@@ -67,7 +67,7 @@ angle: 84
 delay: 360
 angle: 90
 delay: 230
-Execution_time: 1664
+Execution_time: 1648
 Test_3 no. 6 
 angle: 82
 delay: 260
@@ -95,7 +95,7 @@ angle: 75
 delay: 440
 angle: 69
 delay: 410
-Execution_time: 52368
+Execution_time: 52384
 Test_3 no. 8 
 angle: 77
 delay: 150
@@ -109,7 +109,7 @@ angle: 65
 delay: 620
 angle: 72
 delay: 360
-Execution_time: 10400
+Execution_time: 10452
 Test_3 no. 9 
 angle: 76
 delay: 970
@@ -123,7 +123,7 @@ angle: 77
 delay: 180
 angle: 97
 delay: 370
-Execution_time: 9340
+Execution_time: 9344
 Test_3 no. 10 
 angle: 114
 delay: 940
@@ -137,4 +137,4 @@ angle: 82
 delay: 890
 angle: 68
 delay: 720
-Execution_time: 30576
+Execution_time: 30568

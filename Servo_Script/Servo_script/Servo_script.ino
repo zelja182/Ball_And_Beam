@@ -113,8 +113,8 @@ void test_3()
     // Generate data for test
     for(j=0;j<6;j++)
     {
-      random_angles[j] = start_90 + random(-45, 45);  // Test data 1
-      // random_angles[j] = start_90 + random(-30, 30);  // Test data 2
+      // random_angles[j] = start_90 + random(-45, 45);  // Test data 3-1
+      random_angles[j] = start_90 + random(-30, 30);  // Test data 3-2
       random_delay[j] = random(10, 100) * 10;
     }
 
@@ -159,7 +159,8 @@ void setup() {
   pinMode(2, INPUT_PULLUP);  // Button Pin
   pinMode(7, OUTPUT);        // LED Pin
   my_servo.attach(5);        // Servo Pin
-  my_servo.write(start_90);
+  // my_servo.write(start_0);  // Start angle for test_1
+  my_servo.write(start_90);  // Start angle for test_2 and test_3
   // attachInterrupt(digitalPinToInterrupt(2), test_1, FALLING);
 }
 
