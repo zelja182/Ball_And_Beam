@@ -20,8 +20,8 @@ def import_missing_values(new_angles, new_time):
     return new_angles, new_time
 
 # # Zakomentarisina putevi do direktorijuma za svaki slucaj
-path_raw = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_2/Raw/"
-tmp_path = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_2/Raw/tmp/"
+path_raw = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_45/Raw/"
+tmp_path = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_45/Raw/tmp/"
 # path_input = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_script_2/Input_data.json"
 path_processed = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_script_4/Processed/"
 
