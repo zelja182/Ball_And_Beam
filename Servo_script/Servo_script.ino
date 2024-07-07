@@ -113,9 +113,8 @@ void test_3()
     // Generate data for test
     for(j=0;j<6;j++)
     {
-      // random_angles[j] = start_90 + random(-45, 45);
-      // random_angles[j] = start_90 + random(-30, 30);
-      random_angles[j] = start_90 + random(-15, 15);
+      random_angles[j] = start_90 + random(-45, 45);  // Test data 1
+      // random_angles[j] = start_90 + random(-30, 30);  // Test data 2
       random_delay[j] = random(10, 100) * 10;
     }
 
@@ -152,6 +151,7 @@ void test_3()
     i++;
   }
 }
+
 
 void setup() {
   // put your setup code here, to run once:
