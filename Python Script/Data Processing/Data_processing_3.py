@@ -20,28 +20,29 @@ def import_missing_values(new_angles, new_time):
     return new_angles, new_time
 
 # # Zakomentarisina putevi do direktorijuma za svaki slucaj
-path_raw = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_script_4/Raw/"
-path_input = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_script_2/Input_data.json"
+path_raw = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_2/Raw/"
+tmp_path = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_2/Raw/tmp/"
+# path_input = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_script_2/Input_data.json"
 path_processed = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_script_4/Processed/"
 
 
 '''
 Sredjivanje podataka za Identifikaciju
 '''
-for i in range(10):
+for i in range(30):
     try:
         # Load data 
         output_data_path = path_raw + "Test_" + str(i)  + ".json"
         df = pd.read_json(output_data_path)
 
         # Load input data 
-        df_in = pd.read_json(path_input)
-        input_angles = np.array(df_in["test_" + str(i)]['angle'])
-        delays = np.array(df_in["test_" + str(i)]['delay'])
-        # adding missing values
-        input_angles = np.append(input_angles, 90) 
-        delays = np.append(delays, 500)
-        del df_in
+        # df_in = pd.read_json(path_input)
+        # input_angles = np.array(df_in["test_" + str(i)]['angle'])
+        # delays = np.array(df_in["test_" + str(i)]['delay'])
+        # # adding missing values
+        # input_angles = np.append(input_angles, 90) 
+        # delays = np.append(delays, 500)
+        # del df_in
 
         # Convert data
         df["Angles"] = df["Counts"]*360.0/600.0
@@ -152,7 +153,7 @@ for i in range(10):
         # plt.show()
 
         # df_new.to_csv(path_processed + "Test_" + str(i) + ".csv")
-        df.to_csv(path_processed + "Test_" + str(i) + ".csv")
+        df.to_csv(tmp_path + "Test_" + str(i) + ".csv")
 
     except Exception as e:
         print("Something went wrong!!!")
