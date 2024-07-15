@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal as si
+
 
 
 def show_plot(time_s, angle, pwm, idx):
@@ -14,7 +14,7 @@ def show_plot(time_s, angle, pwm, idx):
     plt.show()
 
 
-path_1 = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_2/Raw/tmp/"
+path_1 = "C:/Users/zracic/Documents/Master/Servo_motor_model_identification/Data/Encoder_data/Test_2/Processed/"
 
 for i in range(30):
     try:
