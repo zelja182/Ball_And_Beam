@@ -14,9 +14,9 @@ def show_plot(time_s, angle, pwm, idx):
     plt.show()
 
 
-path_1 = "C:/Users/zracic/Documents/Master/Servo_motor_model_identification/Data/Encoder_data/Test_2/Processed/"
+path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_45/Processed/"
 
-for i in range(30):
+for i in range(10):
     try:
         # Load data 
         output_data_path = path_1 + "Test_" + str(i)  + ".csv"
