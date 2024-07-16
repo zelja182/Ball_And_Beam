@@ -50,12 +50,6 @@ for i in range(10):
             print("Test {} is unique: {}".format(i, df_new["Time_s"].is_unique))  # Check if Time_s is unique, if not correct it manualy
             df_new.to_csv(processed_path + "Test_" + str(i) + ".csv")
 
-
-        # # Process and save new DF
-        # df_new["Time_s"]= df_new["Time_s"].round(decimals=2)
-        # df_new.drop_duplicates(subset='Time_s', keep='first', inplace=True, ignore_index=True)
-        # df_new.to_csv(processed_path + "Test_" + str(i) + ".csv")
-
     except Exception as e:
         print("Something whent wrong while proccessing file number: ", i)
         print(e)
