@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 
 
-tmp_path = "C:/Users/zracic/Documents/Master/Servo_motor_model_identification/Data/Encoder_data/Test_2/Raw/tmp/"
-processed_path = "C:/Users/zracic/Documents/Master/Servo_motor_model_identification/Data/Encoder_data/Test_2/Processed/"
+tmp_path = "../Servo_motor_model_identification/Data/Encoder_data/Test_2/Raw/tmp/"
+processed_path = "../Servo_motor_model_identification/Data/Encoder_data/Test_2/Processed/"
 
 for i in range(30):
     try:
