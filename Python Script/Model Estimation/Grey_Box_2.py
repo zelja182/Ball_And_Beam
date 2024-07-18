@@ -7,7 +7,7 @@ import pandas as pd
 def state_space_model(X, t, u, a0, b):
     A = -a0
     B = b
-    return (A * X) + (B * u(t)).flatten()
+    return (A * X) + (B * u).flatten()
 
 
 # Define the function to compute the output y
@@ -22,41 +22,36 @@ def objective(params, t, u, y):
     y_model = []
 
     for ti in range(len(t) - 1):
-        X = odeint(state_space_model, X0, [t[ti], t[ti+1]], args=(u, a0, b))[-1]
+        X = odeint(state_space_model, X0, [t[ti], t[ti+1]], args=(u[ti], a0, b))[-1]
         y_model.append(compute_output(X))
         X0 = X  # Update initial condition for the next step
 
     y_model = np.array(y_model)
     return np.sum((y[1:] - y_model)**2)  # Sum of squared errors
 
-# Example usage
-# Assuming t, u, y are your time, input, and output data arrays respectively
+def estimate_params(time_array, input_array, output_array):
+    initial_guess = [1, 1]
+    return minimize(objective, initial_guess, args=(time_array, input_array, output_array), method='BFGS').x
 
-# Define the input function
-def u(t):
-    # Here you should define how the input varies with time
-    # This is a placeholder example
-    return np.interp(t, t_array, u_array)
+if __name__ == "__main__":
+    # paths to data 
+    path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_1/Processed/"
+    output_data_path = path_1 + "Test_3.csv"
 
-path_1 = "D:/Projekti/Za master rad/Servo_motor_model_identification/Data/Encoder_data/Test_1/Processed_2/"
+    # generate input
+    df = pd.read_csv(output_data_path)
+    df = df.drop(df[df["Time_s"]>=2.00].index)
+    y_array= df["Angles"].to_numpy()
+    u_array = np.ones(len(y_array))*30
+    t_array = df["Time_s"].to_numpy()
 
-output_data_path = path_1 + "Test_3.csv"
-df = pd.read_csv(output_data_path)
-df = df.drop(df[df["Time_s"]>=2.00].index)
-y_array= df["Angles"].to_numpy()
-print(len(y_array))
-u_array = np.ones(len(y_array))*30
-t_array = np.linspace(0, 2, 200)
+    # estimate values of state space system
+    a0, b = estimate_params(time_array=t_array, input_array=u_array, output_array=y_array)
+    print(f'Identified parameters: a0={a0},  b={b}')
 
-# Initial guess for parameters
-initial_guess = [1, 1]
+    # simulation and validation 
 
-# Perform the optimization
-result = minimize(objective, initial_guess, args=(t_array, u, y_array))
-
-# Extract the identified parameters
-a0, b = result.x
-print(f'Identified parameters: a0={a0},  b={b}')
+    # graph 
 
 
 
