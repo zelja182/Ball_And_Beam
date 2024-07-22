@@ -6,6 +6,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+'''Show plot and validation functions'''
+
 def show_plot(sim_time, sim_out, input_t, input_out, input_pwm):
     plt.plot(sim_time, sim_out, input_t, input_out, input_t, input_pwm)
     plt.grid()
@@ -14,6 +16,32 @@ def show_plot(sim_time, sim_out, input_t, input_out, input_pwm):
     plt.ylabel("Angle")
     plt.show()
 
+def validate(a, b):
+    sys = signal.StateSpace(-a, b, 1, 0)    
+    mse = []
+    for idx_1 in range(1,3):
+        for idx_2 in range(10): 
+            try:
+                val_path = "../Servo_motor_model_identification/Data/Encoder_data/Validation_data/Dir_"+str(idx_1)+"/Val_Data_"+str(idx_2)+".csv"
+                val_data = pd.read_csv(val_path)
+                val_in = val_data["PWM"].to_numpy()
+                val_t = val_data["Time_s"].to_numpy()
+                val_out = val_data["Angles"].to_numpy()
+
+                tout, yout, _ = signal.lsim(system=sys, U=val_in, T=val_t)  # simulate
+                mse.append(np.mean((val_out - yout)**2))  # calculate mean squere error
+                # show_plot(sim_time=tout, sim_out=yout, input_t=val_t, input_pwm=val_in, input_out=val_out)
+            except FileNotFoundError:
+                pass
+            except Exception as e:
+                print('Test {}-{}'.format(idx_1, idx_2))
+                print(e)
+
+    return np.average(mse)
+    
+
+
+'''System Identification functions'''
 # Define the state-space model
 def state_space_model(X, t, u, a0, b):
     A = -a0
@@ -47,22 +75,9 @@ def estimate_params(time_array, input_array, output_array):
 if __name__ == "__main__":
     # paths to data 
     path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_"
-    val_path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Validation_data/Validation_data_1.csv"
-    val_path_2 = "../Servo_motor_model_identification/Data/Encoder_data/Validation_data/Validation_data_2.csv"
     est_path = "../Servo_motor_model_identification/Data/Estimation_data/Grey_Box.csv"
 
-    est_data = {'a': [], 'b': [], 'mse_1': [], 'mse_2': []}
-
-    val_data_1 = pd.read_csv(val_path_1)
-    val_in_1 = val_data_1["PWM"].to_numpy()
-    val_t_1 = val_data_1["Time_s"].to_numpy()
-    val_out_1 = val_data_1["Angles"].to_numpy()
-
-    val_data_2 = pd.read_csv(val_path_2)
-    val_in_2 = val_data_2["PWM"].to_numpy()
-    val_t_2 = val_data_2["Time_s"].to_numpy()
-    val_out_2 = val_data_2["Angles"].to_numpy()
-
+    est_data = {'a': [], 'b': [], 'avg_mse': []}
     
     for i in range(1,3):
         dir_path = path_1 + str(i)
@@ -81,21 +96,11 @@ if __name__ == "__main__":
                 a0, b = estimate_params(time_array=t_array, input_array=u_array, output_array=y_array)
 
                 # simulation and validation 
-                sys = signal.StateSpace(-a0, b, 1, 0)
+                avg_mse = validate(a=a0, b=b)
 
-                tout, yout, xout = signal.lsim(system=sys, U=val_in_1, T=val_t_1)
-                mse_1 = np.mean((val_out_1 - yout)**2)
-                show_plot(sim_time=tout, sim_out=yout, input_t=val_t_1, input_pwm=val_in_1, input_out=val_out_1)
-
-                tout, yout, xout = signal.lsim(system=sys, U=val_in_2, T=val_t_2)
-                mse_2 = np.mean((val_out_2 - yout)**2)
-                show_plot(sim_time=tout, sim_out=yout, input_t=val_t_2, input_pwm=val_in_2, input_out=val_out_2)
-
-                est_data["a"].append(a0)
-                est_data["b"].append(b)
-                est_data["mse_1"].append(mse_1)
-                est_data["mse_2"].append(mse_2)
-                # print(f'Identified parameters: a0={a0},  b={b}, mse_1={mse_1}, mse_2={mse_2}')
+                est_data['a'].append(a0)
+                est_data['b'].append(b)
+                est_data["avg_mse"].append(avg_mse)
 
             except FileNotFoundError:
                 i = i+1
