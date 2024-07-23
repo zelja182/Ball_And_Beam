@@ -18,7 +18,7 @@ def show_plot(sim_time, sim_out, input_t, input_out, input_pwm):
 
 def validate(a, b):
     sys = signal.StateSpace(-a, b, 1, 0)    
-    mse = []
+    mse = np.empty(shape=(2,10))
     for idx_1 in range(1,3):
         for idx_2 in range(10): 
             try:
@@ -29,15 +29,16 @@ def validate(a, b):
                 val_out = val_data["Angles"].to_numpy()
 
                 tout, yout, _ = signal.lsim(system=sys, U=val_in, T=val_t)  # simulate
-                mse.append(np.mean((val_out - yout)**2))  # calculate mean squere error
+                mse[idx_1-1][idx_2] = np.mean((val_out - yout)**2)  # calculate mean squere error
                 # show_plot(sim_time=tout, sim_out=yout, input_t=val_t, input_pwm=val_in, input_out=val_out)
             except FileNotFoundError:
-                pass
+                mse[idx_1-1][idx_2] = None
             except Exception as e:
                 print('Test {}-{}'.format(idx_1, idx_2))
                 print(e)
 
-    return np.average(mse)
+    return mse
+    # return np.average(mse)
     
 
 
@@ -77,7 +78,15 @@ if __name__ == "__main__":
     path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_"
     est_path = "../Servo_motor_model_identification/Data/Estimation_data/Grey_Box.csv"
 
-    est_data = {'a': [], 'b': [], 'avg_mse': []}
+    est_data = {
+        'test': [], 'a': [], 'b': [], 'mse-0-0' : [], 'mse-0-1' : [], 'mse-0-2' : [], 'mse-0-3' : [], 
+        'mse-0-4' : [], 'mse-0-5' : [], 'mse-0-6' : [], 'mse-0-7' : [], 'mse-0-8' : [], 'mse-0-9' : [], 
+        'mse-1-0' : [], 'mse-1-1' : [], 'mse-1-2' : [], 'mse-1-3' : [], 'mse-1-4' : [], 'mse-1-5' : [], 
+        'mse-1-6' : [], 'mse-1-7' : [], 'mse-1-8' : [], 'mse-1-9' : [], 'mse-0-0' : [], 'mse-0-1' : [], 
+        'mse-0-2' : [], 'mse-0-3' : [], 'mse-0-4' : [], 'mse-0-5' : [], 'mse-0-6' : [], 'mse-0-7' : [], 
+        'mse-0-8' : [], 'mse-0-9' : [], 'mse-1-0' : [], 'mse-1-1' : [], 'mse-1-2' : [], 'mse-1-3' : [], 
+        'mse-1-4' : [], 'mse-1-5' : [], 'mse-1-6' : [], 'mse-1-7' : [], 'mse-1-8' : [], 'mse-1-9' : []          
+        }
     
     for i in range(1,3):
         dir_path = path_1 + str(i)
@@ -96,18 +105,26 @@ if __name__ == "__main__":
                 a0, b = estimate_params(time_array=t_array, input_array=u_array, output_array=y_array)
 
                 # simulation and validation 
-                avg_mse = validate(a=a0, b=b)
+                msError = validate(a=a0, b=b)
 
+                est_data['test'].append(str(i)+"-"+str(j))
                 est_data['a'].append(a0)
                 est_data['b'].append(b)
-                est_data["avg_mse"].append(avg_mse)
+                for idx_1 in range(2):
+                    for idx_2 in range(10):
+                        try:
+                            est_data["mse-"+str(idx_1)+"-"+str(idx_2)].append(msError[idx_1][idx_2])
+                        except Exception as ex:
+                            print(ex)
 
             except FileNotFoundError:
                 i = i+1
             except Exception as e:
                 print(e)
     
+    # print(est_data)
     out_data = pd.DataFrame(est_data)
+    # out_data["a"].
     out_data.to_csv(est_path)
 
 
