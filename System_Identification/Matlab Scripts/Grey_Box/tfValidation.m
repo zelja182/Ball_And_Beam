@@ -2,7 +2,7 @@ close all
 clear all
 clc
 
-dir_path = "..\Servo_motor_model_identification\Data\Encoder_data\Test_2\Processed\Test_6.csv";
+dir_path = "..\Ball_And_Beam\System_Identification\Data\Encoder_data\Test_2\Processed\Test_6.csv";
 T = readtable(dir_path, 'ReadVariableNames', true);
 
 % Remove everything afeter t>= 2s and NaN values

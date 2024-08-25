@@ -6,7 +6,7 @@ def read_arduiono_data():
     return data 
 
 def save_data(test_no = 0):
-    dir_path = "../Servo_motor_model_identification/Data/Input_data"
+    dir_path = "../Ball_And_Beam/System_Identification/Data/Input_data"
     file_name = "/Test_input_data_"
     # file_no = len(os.listdir(dir_path + str(test_no)))
     final_path = dir_path + file_name + str(test_no) + ".txt"

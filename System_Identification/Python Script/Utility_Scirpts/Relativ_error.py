@@ -14,7 +14,7 @@ def show_plot(time_s, angle, pwm, idx):
     plt.show()
 
 
-path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_2/Processed/"
+path_1 = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Processed/"
 relativ_error = np.zeros((4, 5))
 relativ_error_1 = np.zeros((6, 5))
 exp_value = [30, 45, 60, 90]

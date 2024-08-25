@@ -14,7 +14,7 @@ def show_plot(time_s, angle, pwm, idx):
     plt.show()
 
 
-path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_45/Processed/"
+path_1 = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_45/Processed/"
 
 for i in range(10):
     try:
