@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def merge(start, end):
-    path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_1/Processed/"
+    path_1 = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_1/Processed/"
     df_2 = pd.DataFrame()
     for i in range(start, end):
         output_data_path = path_1 + "Test_" + str(i)  + ".csv"

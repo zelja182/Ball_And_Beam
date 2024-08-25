@@ -22,7 +22,7 @@ def validate(a, b):
     for idx_1 in range(1,3):
         for idx_2 in range(10): 
             try:
-                val_path = "../Servo_motor_model_identification/Data/Encoder_data/Validation_data/Dir_"+str(idx_1)+"/Val_Data_"+str(idx_2)+".csv"
+                val_path = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Validation_data/Dir_"+str(idx_1)+"/Val_Data_"+str(idx_2)+".csv"
                 val_data = pd.read_csv(val_path)
                 val_in = val_data["PWM"].to_numpy()
                 val_t = val_data["Time_s"].to_numpy()
@@ -75,8 +75,8 @@ def estimate_params(time_array, input_array, output_array):
 
 if __name__ == "__main__":
     # paths to data 
-    path_1 = "../Servo_motor_model_identification/Data/Encoder_data/Test_"
-    est_path = "../Servo_motor_model_identification/Data/Estimation_data/Grey_Box.csv"
+    path_1 = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_"
+    est_path = "../Ball_And_Beam/System_Identification/Data/Estimation_data/Grey_Box.csv"
 
     est_data = {
         'test': [], 'a': [], 'b': [], 'mse-0-0' : [], 'mse-0-1' : [], 'mse-0-2' : [], 'mse-0-3' : [], 

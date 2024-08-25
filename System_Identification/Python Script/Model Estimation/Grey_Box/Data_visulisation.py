@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-matlab_data_path = "../Servo_motor_model_identification/Data/Estimation_data/GreyBox/Matlab/Est_data_1.json"
-python_data_path_1 = "../Servo_motor_model_identification/Data/Estimation_data/GreyBox/Python/Est_data.csv"
-python_data_path_2 = "../Servo_motor_model_identification/Data/Estimation_data/GreyBox/Python/Est_data_1.csv"
+matlab_data_path = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Matlab/Est_data_1.json"
+python_data_path_1 = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Python/Est_data.csv"
+python_data_path_2 = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Python/Est_data_1.csv"
 
 
 def workaround():

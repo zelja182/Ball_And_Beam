@@ -16,9 +16,9 @@ def add_missing_data(data_1, data_2):
     return df_tmp
 
 
-tmp_path = "../Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_45/Raw/tmp/"
-input_data = "../Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_45/Input_data.json"
-processed_path = "../Servo_motor_model_identification/Data/Encoder_data/Test_3/Test_45/Processed/"
+tmp_path = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_45/Raw/tmp/"
+input_data = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_45/Input_data.json"
+processed_path = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_45/Processed/"
 
 for i in range(10):
     try:

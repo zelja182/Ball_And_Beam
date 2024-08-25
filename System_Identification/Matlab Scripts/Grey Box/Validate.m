@@ -2,7 +2,7 @@ function [MSE] = Validate(num,den)
 %VALIDATE Summary of this function goes here
 %   Detailed explanation goes here
     
-    dir_path = "..\Servo_motor_model_identification\Data\Encoder_data\Validation_data\Dir_";
+    dir_path = "..\Ball_And_Beam\System_Identification\Data\Encoder_data\Validation_data\Dir_";
     errorData= struct();
     sys = tf(num, den);
     

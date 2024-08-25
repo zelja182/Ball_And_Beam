@@ -1,1 +1,6 @@
 serial == 0.0.97
+matplotlib == 3.9.2
+numpy == 2.1.0
+pandas == 2.2.2
+pigpio == 1.78
+scipy == 1.14.1

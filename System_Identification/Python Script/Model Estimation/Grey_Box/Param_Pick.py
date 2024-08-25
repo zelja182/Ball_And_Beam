@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 
-dir_path = "../Servo_motor_model_identification/Data/Estimation_data/"
+dir_path = "../Ball_And_Beam/System_Identification/Data/Estimation_data/"
 
 df = pd.read_csv(dir_path + "Grey_Box.csv")
 

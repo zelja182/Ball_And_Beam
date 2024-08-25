@@ -3,14 +3,14 @@ clear all
 clc
 
 sysData = struct();
-dir_path = "..\Servo_motor_model_identification\Data\Encoder_data\Test_";
+dir_path = "..\Ball_And_Beam\System_Identification\Data\Encoder_data\Test_";
 data_path = "\Processed\Test_";
 
 
 % Polovi i nule
 np = 2;
 nz = 0;
-file_path = "..\Servo_motor_model_identification\Data\Estimation_data\GreyBox\Matlab\Est_data_1.json";
+file_path = "..\Ball_And_Beam\System_Identification\Data\Estimation_data\GreyBox\Matlab\Est_data_1.json";
 
 % Estimacija prenosne funkcije
 for idx = 1:2
