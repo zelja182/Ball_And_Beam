@@ -9,6 +9,6 @@ Ovaj projekat se bavi problemom balansiranja lopte na šini i za potrebe istog j
     - Projektovanje platforme za ispitivanje u programu za CAD modeliranje
     - Pokretanje ekspirimenata, prikupljnje i obradu podataka
     - Grey box metod identifikacije sistema - gde je na osnovu poznatih informacija formirana prenosna funkcija, a zatim vrednosti parametra te prenosne funkcije na osnovu prikupljenih i obrađeninih podataka i funkcijom minimizacije estimirani
-    - Black box metod identifikacije sistema - cilj ovog dela jeste bio implementacija neuronskih mreža i atoregresivnog modela iz rada https://www.sciencedirect.com/science/article/pii/S2405896320317353
+    - Black box metod identifikacije sistema - cilj ovog dela jeste određivanje matematičkog modela uz pomoć neuronskih mreža i atoregresivnog modela. Preuzeto iz rada https://www.sciencedirect.com/science/article/pii/S2405896320317353
 - Konstruisanje i implementacija upravljačkog sistema  --> in progress
 - Upoređivanje rezultata simuliranog i stvarnog sistema  --> in progress 
