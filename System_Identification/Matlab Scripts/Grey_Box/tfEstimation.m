@@ -8,9 +8,9 @@ data_path = "\Processed\Test_";
 
 
 % Polovi i nule
-np = 2;
-nz = 0;
-file_path = "..\Ball_And_Beam\System_Identification\Data\Estimation_data\GreyBox\Matlab\Est_data_1.json";
+np = 2; % broj polova
+nz = 1; % broj nula
+file_path = "..\Ball_And_Beam\System_Identification\Data\Estimation_data\GreyBox\Model_2.json";
 
 % Estimacija prenosne funkcije
 for idx = 1:2
@@ -26,7 +26,7 @@ for idx = 1:2
             
             % Estimate tf and save num and den of sys
             data = iddata(T.Angles, T.PWM, 0.01);
-            sys = tfest(data, np);
+            sys = tfest(data, np, nz);
             test_no = sprintf('test_%d_%d', idx, jdx);
             sysData.(test_no).num = sys.Numerator;
             sysData.(test_no).den = sys.Denominator;

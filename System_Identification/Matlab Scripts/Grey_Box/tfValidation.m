@@ -1,28 +1,36 @@
 close all
 clear all
 clc
-
-dir_path = "..\Ball_And_Beam\System_Identification\Data\Encoder_data\Test_2\Processed\Test_6.csv";
-T = readtable(dir_path, 'ReadVariableNames', true);
-
-% Remove everything afeter t>= 2s and NaN values
-toDelete = T.Time_s >= 2.0;
-T(toDelete, :) = [];
-T = rmmissing(T);
-
-% Generate data
-data = iddata(T.Angles, T.PWM, 0.01);
-
+ 
 % Generate transferfunction
-num = 9.508274;
-den = [1, 10.122469658724475];
+num = [0.509897713282462, 228.82356592561126];
+den = [1, 24.31577422764982, 256.4989025643107];
 sys = tf(num, den);
 
-simTime = 0:0.01:length(T.PWM)/100-0.01;
-[y, tout] = lsim(sys, T.PWM, simTime);
-figure(1);
-plot(tout, y, T.Time_s, T.Angles);
-grid on; 
+dir_path = "..\Ball_And_Beam\System_Identification\Data\Encoder_data\Validation_data\Dir_";
 
-figure(2);
-resid(sys, data);
+for i = 1:2
+    for j = 0:8
+        try
+            final_path = dir_path + int2str(i) + '\Val_Data_' + int2str(j) + '.csv';
+
+            T = readtable(final_path, 'ReadVariableNames', true);
+            data = iddata(T.Angles, T.PWM, 0.01);
+            
+            fig_no = i*10+j;
+            figure(fig_no);
+            compare(data, sys);
+      
+            fig_no_2 = 100+i*10+j;
+            figure(fig_no_2);
+            resid(sys, data);            
+            
+         catch ME
+            if (strcmp(ME.identifier, 'MATLAB:readtable:OpenFailed'))
+                ;
+            else
+                disp(ME)
+            end
+        end
+    end
+end

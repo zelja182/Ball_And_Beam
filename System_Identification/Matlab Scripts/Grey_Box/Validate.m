@@ -7,7 +7,7 @@ function [MSE] = Validate(num,den)
     sys = tf(num, den);
     
     for i = 1:2
-        for j = 0:9
+        for j = 0:8
             try
                 final_path = dir_path + int2str(i) + '\Val_Data_' + int2str(j) + '.csv';
                 T = readtable(final_path, 'ReadVariableNames', true);

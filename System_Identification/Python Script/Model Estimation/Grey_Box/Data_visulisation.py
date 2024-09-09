@@ -1,27 +1,26 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-matlab_data_path = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Matlab/Est_data_1.json"
-python_data_path_1 = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Python/Est_data.csv"
-python_data_path_2 = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Python/Est_data_1.csv"
+matlab_data_path = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Model_2.json"
 
+py_data_path = "../Ball_And_Beam/System_Identification/Data/Estimation_data/GreyBox/Model_2.csv"
 
 def workaround():
     '''
     There are few steps that should be followed
     1. Open matlab_data_path
     2. Use online JSON formater and format data to look pretty
-    3. Replace --> "MSE": with --> blank line
+    3. Replace --> "MSE": { with --> blank line
     4. Replace --> }, with --> ,
     5. Remove last }
     6. Use online JSON formater to make data pretty one more time
-    7. Use workaround script to translate data and then save it as .csv at this python_data_path_1
+    7. Use workaround function to translate data and then save it as .csv at this python_data_path_1
     8. 1st column doesn't have name, --> add name 'test_no'
     After all of this steps, we are ready to use this data and show some plots 
     '''
     df = pd.read_json(matlab_data_path)
     df = df.T
-    df.to_csv(python_data_path_1)
+    df.to_csv(py_data_path)
 
 
 def show_plot():
@@ -66,7 +65,7 @@ def make_new_table(colums_to_drop):
 
 
 if __name__=="__main__":
-    # workaround()
+    workaround()
     # show_plot()
-    make_new_table(['mse_2_4', 'mse_2_5', 'mse_2_7', 'mse_2_9'])
+    # make_new_table(['mse_2_4', 'mse_2_5', 'mse_2_7', 'mse_2_9'])
 
