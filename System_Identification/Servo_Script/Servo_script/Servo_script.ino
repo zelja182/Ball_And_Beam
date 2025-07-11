@@ -2,7 +2,7 @@
 #include "Timer.h"
 
 int test_angles_1[4] = {30, 45, 60, 90};
-int test_angles_2[6] = {-60, -45, -30, 30, 45, 60};
+int test_angles_2[6] = {-30, -20, -10, 10, 20, 30};  
 int start_0 = 0;
 int start_90 = 90;
 unsigned int time_var = 0;
@@ -158,7 +158,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(2, INPUT_PULLUP);  // Button Pin
   pinMode(7, OUTPUT);        // LED Pin
-  my_servo.attach(5);        // Servo Pin
+  my_servo.attach(5, 1000, 2400);        // Servo Pin
   // my_servo.write(start_0);  // Start angle for test_1
   my_servo.write(start_90);  // Start angle for test_2 and test_3
   // attachInterrupt(digitalPinToInterrupt(2), test_1, FALLING);
