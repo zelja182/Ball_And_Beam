@@ -12,7 +12,9 @@ position = 0
 position_array = []
 time_array = []
 time_start = 0
+old_tick = 0
 test_count = 0
+SAMPLE_TIME = 9000
 
 def save_data():
     global test_count
@@ -34,13 +36,18 @@ def var_reset():
 
 def collect_data():
     global time_start
+    global old_tick
     if not position_array:
-        time_start = t.monotonic_ns()
+        time_start = decoder.tick
         time_array.append(0)
         position_array.append(position)
+        old_tick = decoder.tick
     else:
-        time_array.append(t.monotonic_ns() - time_start)
-        position_array.append(position)
+        if decoder.tick - old_tick >= SAMPLE_TIME:
+            old_tick = decoder.tick
+            time_array.append(old_tick - time_start)
+            position_array.append(position)
+             
 
 def callback(way):
     global position
@@ -69,7 +76,14 @@ pi.set_mode(LED_PIN, pigpio.OUTPUT)
 def button_press_handler():
     pi.write(LED_PIN, 1)
     t.sleep(1)
-    print(max(position_array))
+    try:
+        print(f"Min: {min(position_array)*360.0/600.0}")
+    except:
+        print("No min value")
+    try:
+        print(f"Max: {max(position_array)*360.0/600.0}")
+    except:
+        print("No max value")
     save_data()
     var_reset()
     pi.write(LED_PIN, 0)
