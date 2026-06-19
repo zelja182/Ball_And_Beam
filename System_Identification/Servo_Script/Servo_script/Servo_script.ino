@@ -59,12 +59,12 @@ void test_1()
 
 void test_2()
 {
-  if(i==10)
+  if(i==15)
   {
     Serial.println("The end of test");
     i++;
   }
-  else if (i<10)
+  else if (i<15)
   {
     int random_angles[6];
     int random_pwms[6];
@@ -74,8 +74,8 @@ void test_2()
     // Generate data for test
     for(j=0;j<6;j++)
     {
-      // random_angles[j] = random(-45, 45);  // Test data 2-1
-      random_angles[j] = random(-30, 30);  // Test data 2-2
+      random_angles[j] = random(-45, 45);  // Test data 2-1
+      // random_angles[j] = random(-30, 30);  // Test data 2-2
       random_pwms[j] = map(random_angles[j], -135, 135, 500, 2500);  
       random_delay[j] = random(10, 100) * 10;
     }
