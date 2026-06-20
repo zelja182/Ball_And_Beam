@@ -21,21 +21,21 @@ def get_brake_point(df):
     return False
 
 
-path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Raw_json/"
-processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Processed/"
+path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_1/Raw/"
+processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_1/Processed/"
 
 
-exp_value_1 = [-30, -20, -10, 10, 20, 30]
+exp_value_1 = [-45, -30, -20, -10, 10, 20, 30, 45]
 j = -1
 
 
-for i in range(20):
+for i in range(40):
     if not i%5:
         j = j + 1
     try:
         # Load data
-        output_data_path = processed_path_1 + "Test_" + str(i) + ".csv"
-        df = pd.read_csv(output_data_path)
+        input_data_path = path_1 + "Test_" + str(i) + ".csv"
+        df = pd.read_csv(input_data_path)
 
         brake_poit = get_brake_point(df)
 

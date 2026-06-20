@@ -24,18 +24,18 @@ def get_brake_point(df):
 # path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Raw_json/"
 # processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Processed/"
 
-path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_30/Raw_json/"
-processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_30/"
+path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Test_45/Raw_json/"
+processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Test_45/Processed/"
 
 
-exp_value_1 = [-30, -20, -10, 10, 20, 30]
+exp_value_1 = [-45, -30, -20, -10, 10, 20, 30, 45]
 
 j = -1
 
 '''
 Odredjivanje Relativne greske
 '''
-for i in range(20):
+for i in range(15):
     if not i%5:
         j = j + 1
     try:
@@ -47,7 +47,7 @@ for i in range(20):
         df["Angles"] = df["Counts"]*360.0/600.0
         time_s = df["Time"].to_numpy()
         df["Time_s"] = np.round(time_s/1000000, 2)
-        df["PWM"] = np.full(len(df["Angles"]), exp_value_1[j])
+        # df["PWM"] = np.full(len(df["Angles"]), exp_value_1[j])
         df.drop("Time", axis=1, inplace=True)
         df.drop("Counts", axis=1, inplace=True)
         df.to_csv(path_1 + "Test_" + str(i) + ".csv")

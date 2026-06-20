@@ -16,16 +16,32 @@ def show_plot(time_s, angle, pwm, idx):
     plt.show()
 
 
+def split_contiguous_pwm_blocks(df):
+    blocks = []
+    start = 0
+    for i in range(1, len(df)):
+        if df["PWM"].iloc[i] != df["PWM"].iloc[i - 1]:
+            blocks.append(df.iloc[start:i].copy())
+            start = i
+    blocks.append(df.iloc[start:].copy())
+    return blocks
+
+
 def add_missing_data(data_1, data_2):
-    # Add missing data
-    missing_time = np.arange(start=data_1["Time_s"].iloc[-1]+0.01, stop=data_2["Time_s"].iloc[0], step=0.01)
+    missing_time = np.arange(
+        start=data_1["Time_s"].iloc[-1] + 0.01,
+        stop=data_2["Time_s"].iloc[0],
+        step=0.01,
+    )
+    if len(missing_time) == 0:
+        return pd.DataFrame(columns=["Angles", "Time_s", "PWM"])
+
     if np.equal(np.round(missing_time[-1], 2), data_2["Time_s"].iloc[0]):
         missing_time = np.delete(missing_time, -1)
     missing_time = np.round(missing_time, 2)
     missing_angle = np.full(shape=np.shape(missing_time), fill_value=data_1["Angles"].iloc[-1])
     missing_pwm = np.full(shape=np.shape(missing_time), fill_value=data_1["PWM"].iloc[0])
 
-    # Create tmp DF with missing data
     df_tmp = pd.DataFrame()
     df_tmp["Angles"] = missing_angle
     df_tmp["Time_s"] = missing_time
@@ -34,27 +50,23 @@ def add_missing_data(data_1, data_2):
     return df_tmp
 
 
-path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_30/"
-processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_30/Processed/"
+path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Test_45/Raw_json/"
+processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Test_45/Processed/"
 
 
-for i in range(10):
+for i in range(15):
     try:
         # Load data
         output_data_path = path_1 + "Test_" + str(i) + ".csv"
         df = pd.read_csv(output_data_path)
 
-        pwm = df["PWM"].unique()
-        pwm = pwm[~np.isnan(pwm)]
+        blocks = split_contiguous_pwm_blocks(df)
 
-        # Separate data by PWM
         new_data = {}
-        for p, idx in zip(pwm, range(len(pwm))):
-            new_data[idx * 2] = df.query("PWM ==" + str(p))
-
-        # Add missing data
-        for idx in range(len(new_data) - 1):
-            new_data[idx * 2 + 1] = add_missing_data(data_1=new_data[idx * 2], data_2=new_data[idx * 2 + 2])
+        for idx, block in enumerate(blocks):
+            new_data[idx * 2] = block
+            if idx < len(blocks) - 1:
+                new_data[idx * 2 + 1] = add_missing_data(data_1=block, data_2=blocks[idx + 1])
 
         # Create new data by merging missing data and recorded data
         df_new = pd.DataFrame()
@@ -66,5 +78,5 @@ for i in range(10):
         show_plot(time_s=df_new["Time_s"], angle=df_new["Angles"], idx=i, pwm=df_new["PWM"])
 
 
-    except:
-        print("Data not found or relevant")
+    except Exception as error:
+        print("Failed to process test " + str(i) + ": " + str(error))

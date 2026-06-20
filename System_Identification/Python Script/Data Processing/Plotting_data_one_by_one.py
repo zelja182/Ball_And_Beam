@@ -20,19 +20,12 @@ def get_brake_point(df):
             return i + 1
     return False
 
-# path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Raw_json/"
-# processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Processed/"
 
-path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_30/Raw_json/"
-processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_3/Test_30/"
+processed_path_1 = "D:/Projekti/Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Test_30/Processed/"
 
 
-exp_value_1 = [-30, -20, -10, 10, 20, 30]
 
-j = -1
-
-
-for i in range(20):
+for i in range(40):
     try:
         # Load data
         output_data_path = processed_path_1 + "Test_" + str(i) + ".csv"
