@@ -1,211 +1,1 @@
-Zero pwm: 1500
-Test_2 no. 1 
-angle: -23
-delay: 890
-angle: 23
-delay: 480
-angle: -20
-delay: 720
-angle: -6
-delay: 180
-angle: -7
-delay: 290
-angle: -30
-delay: 450
-Execution_time: 36692
-Test_2 no. 2 
-angle: -18
-delay: 720
-angle: -3
-delay: 930
-angle: -23
-delay: 890
-angle: 10
-delay: 920
-angle: -27
-delay: 290
-angle: -21
-delay: 570
-Execution_time: 35968
-Test_2 no. 3 
-angle: 10
-delay: 430
-angle: 9
-delay: 280
-angle: 26
-delay: 350
-angle: 7
-delay: 660
-angle: 2
-delay: 470
-angle: 20
-delay: 730
-Execution_time: 12220
-Test_2 no. 4 
-angle: -11
-delay: 290
-angle: 9
-delay: 310
-angle: -23
-delay: 120
-angle: -17
-delay: 460
-angle: -25
-delay: 750
-angle: -22
-delay: 410
-Execution_time: 22048
-Test_2 no. 5 
-angle: 24
-delay: 770
-angle: 11
-delay: 930
-angle: -2
-delay: 740
-angle: -2
-delay: 600
-angle: -6
-delay: 360
-angle: 0
-delay: 230
-Execution_time: 1336
-Test_2 no. 6 
-angle: -8
-delay: 260
-angle: -21
-delay: 540
-angle: 11
-delay: 830
-angle: 27
-delay: 280
-angle: 18
-delay: 530
-angle: 28
-delay: 710
-Execution_time: 45612
-Test_2 no. 7 
-angle: 25
-delay: 530
-angle: 15
-delay: 140
-angle: -7
-delay: 460
-angle: -25
-delay: 390
-angle: -15
-delay: 440
-angle: -21
-delay: 410
-Execution_time: 52056
-Test_2 no. 8 
-angle: -13
-delay: 150
-angle: 15
-delay: 540
-angle: 21
-delay: 880
-angle: 18
-delay: 630
-angle: -25
-delay: 620
-angle: -18
-delay: 360
-Execution_time: 10080
-Test_2 no. 9 
-angle: -14
-delay: 970
-angle: 8
-delay: 640
-angle: -9
-delay: 370
-angle: -19
-delay: 780
-angle: -13
-delay: 180
-angle: 7
-delay: 370
-Execution_time: 9020
-Test_2 no. 10 
-angle: 24
-delay: 940
-angle: -1
-delay: 210
-angle: -25
-delay: 250
-angle: -15
-delay: 780
-angle: -8
-delay: 890
-angle: -22
-delay: 720
-Execution_time: 30268
-Test_2 no. 11 
-angle: -30
-delay: 470
-angle: 24
-delay: 380
-angle: 25
-delay: 280
-angle: 23
-delay: 800
-angle: 16
-delay: 520
-angle: -8
-delay: 350
-Execution_time: 23312
-Test_2 no. 12 
-angle: -8
-delay: 920
-angle: -23
-delay: 910
-angle: -15
-delay: 620
-angle: 21
-delay: 210
-angle: 20
-delay: 610
-angle: 8
-delay: 970
-Execution_time: 21516
-Test_2 no. 13 
-angle: -14
-delay: 300
-angle: -10
-delay: 590
-angle: 5
-delay: 260
-angle: 2
-delay: 380
-angle: -15
-delay: 490
-angle: 24
-delay: 930
-Execution_time: 42224
-Test_2 no. 14 
-angle: 19
-delay: 600
-angle: -5
-delay: 160
-angle: -27
-delay: 660
-angle: 23
-delay: 900
-angle: -12
-delay: 740
-angle: -30
-delay: 840
-Execution_time: 9192
-Test_2 no. 15 
-angle: 16
-delay: 440
-angle: -4
-delay: 340
-angle: 13
-delay: 280
-angle: -26
-delay: 800
-angle: 20
-delay: 190
-angle: 13
-delay: 970
-Execution_time: 46688
+Zero pwm: 1500Test_2 no. 1 angle: -23  delay: 890angle: 23   delay: 480angle: -20  delay: 720angle: -6   delay: 180angle: -7   delay: 290angle: -30  delay: 450Execution_time: 36692Test_2 no. 2 angle: -18  delay: 720angle: -3   delay: 930angle: -23  delay: 890angle: 10   delay: 920angle: -27  delay: 290angle: -21  delay: 570Execution_time: 35968Test_2 no. 3 angle: 10   delay: 430angle: 9    delay: 280angle: 26   delay: 350angle: 7    delay: 660angle: 2    delay: 470angle: 20   delay: 730Execution_time: 12220Test_2 no. 4 angle: -11  delay: 290angle: 9    delay: 310angle: -23  delay: 120angle: -17  delay: 460angle: -25  delay: 750angle: -22  delay: 410Execution_time: 22048Test_2 no. 5 angle: 24   delay: 770angle: 11   delay: 930angle: -2   delay: 740angle: -2   delay: 600angle: -6   delay: 360angle: 0    delay: 230Execution_time: 1336Test_2 no. 6 angle: -8   delay: 260angle: -21  delay: 540angle: 11   delay: 830angle: 27   delay: 280angle: 18   delay: 530angle: 28   delay: 710Execution_time: 45612Test_2 no. 7 angle: 25   delay: 530angle: 15   delay: 140angle: -7   delay: 460angle: -25  delay: 390angle: -15  delay: 440angle: -21  delay: 410Execution_time: 52056Test_2 no. 8 angle: -13  delay: 150angle: 15   delay: 540angle: 21   delay: 880angle: 18   delay: 630angle: -25  delay: 620angle: -18  delay: 360Execution_time: 10080Test_2 no. 9 angle: -14  delay: 970angle: 8    delay: 640angle: -9   delay: 370angle: -19  delay: 780angle: -13  delay: 180angle: 7    delay: 370Execution_time: 9020Test_2 no. 10 angle: 24   delay: 940angle: -1   delay: 210angle: -25  delay: 250angle: -15  delay: 780angle: -8   delay: 890angle: -22  delay: 720Execution_time: 30268Test_2 no. 11 angle: -30  delay: 470angle: 24   delay: 380angle: 25   delay: 280angle: 23   delay: 800angle: 16   delay: 520angle: -8   delay: 350Execution_time: 23312Test_2 no. 12 angle: -8   delay: 920angle: -23  delay: 910angle: -15  delay: 620angle: 21   delay: 210angle: 20   delay: 610angle: 8    delay: 970Execution_time: 21516Test_2 no. 13 angle: -14  delay: 300angle: -10  delay: 590angle: 5    delay: 260angle: 2    delay: 380angle: -15  delay: 490angle: 24   delay: 930Execution_time: 42224Test_2 no. 14 angle: 19   delay: 600angle: -5   delay: 160angle: -27  delay: 660angle: 23   delay: 900angle: -12  delay: 740angle: -30  delay: 840Execution_time: 9192Test_2 no. 15 angle: 16   delay: 440angle: -4   delay: 340angle: 13   delay: 280angle: -26  delay: 800angle: 20   delay: 190angle: 13   delay: 970Execution_time: 46688
