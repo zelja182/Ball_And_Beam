@@ -1,0 +1,36 @@
+# Random split seed=42, 75% train / 25% validation
+# Total runs: 29
+# Training: 22, Validation: 7
+
+TRAINING (22):
+  Test_30/Test_1
+  Test_30/Test_2
+  Test_30/Test_4
+  Test_30/Test_5
+  Test_30/Test_6
+  Test_30/Test_9
+  Test_30/Test_10
+  Test_30/Test_11
+  Test_30/Test_12
+  Test_30/Test_13
+  Test_30/Test_14
+  Test_45/Test_1
+  Test_45/Test_2
+  Test_45/Test_3
+  Test_45/Test_4
+  Test_45/Test_5
+  Test_45/Test_7
+  Test_45/Test_8
+  Test_45/Test_10
+  Test_45/Test_12
+  Test_45/Test_13
+  Test_45/Test_14
+
+VALIDATION (7):
+  Test_30/Test_0
+  Test_30/Test_3
+  Test_30/Test_7
+  Test_30/Test_8
+  Test_45/Test_6
+  Test_45/Test_9
+  Test_45/Test_11
