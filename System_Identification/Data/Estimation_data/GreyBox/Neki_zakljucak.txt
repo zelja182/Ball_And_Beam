@@ -1,0 +1,17 @@
+=== test_0 ===
+Passed: 24 / 29 (fit >= 80%, mse <= 15.0)
+Mean MSE: 5.56   Median MSE: 5.76   Worst MSE: 7.50
+Best:  Test_45_Test_10  fit=87.1%  mse=3.16
+Worst: Test_45_Test_5  fit=87.5%  mse=7.50
+
+=== test_36 ===
+Passed: 27 / 29 (fit >= 80%, mse <= 15.0)
+Mean MSE: 4.86   Median MSE: 4.35   Worst MSE: 8.83
+Best:  Test_45_Test_10  fit=88.6%  mse=2.28
+Worst: Test_45_Test_12  fit=87.0%  mse=8.83
+
+=== test_4 ===
+Passed: 25 / 29 (fit >= 80%, mse <= 15.0)
+Mean MSE: 5.07   Median MSE: 4.78   Worst MSE: 8.20
+Best:  Test_45_Test_10  fit=88.5%  mse=2.36
+Worst: Test_45_Test_12  fit=87.5%  mse=8.20
