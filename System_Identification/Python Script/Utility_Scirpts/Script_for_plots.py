@@ -1,115 +1,118 @@
-import pandas as pd
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import pandas as pd
 
-def merge(start, end):
-    # path_1 = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_1/Processed/"
-    path_1 = "../Ball_And_Beam/System_Identification/Data/Encoder_data/Test_2/Processed/"  # uncoment for test 2 
-    df_2 = pd.DataFrame()
+from thesis_plot_style import (
+    ANGLE_LABEL,
+    TEXT_WIDTH_IN,
+    TIME_LABEL,
+    apply_style,
+    row_height,
+    save_figure,
+)
+
+# --- configuration ---
+TESTS_PER_GROUP = 5
+GROUP_INDICES = None
+ROWS_PER_PAGE = 4  # 4 angle groups per A4 landscape page
+
+SAVE_FIGURES = True
+OUTPUT_DIR = Path(__file__).resolve().parent / "figures" / "test_1"
+SHOW_PLOT = True
+
+DATA_DIR = (
+    Path(__file__).resolve().parent.parent.parent
+    / "Data"
+    / "Encoder_data"
+    / "Test_1"
+    / "Processed"
+)
+
+
+def discover_groups(data_dir: Path) -> list[tuple[int, int, int]]:
+    """Return (start, end, pwm) for each group of repeated runs at one setpoint."""
+    files = sorted(
+        data_dir.glob("Test_*.csv"),
+        key=lambda path: int(path.stem.split("_")[1]),
+    )
+    groups = []
+    for start in range(0, len(files), TESTS_PER_GROUP):
+        end = min(start + TESTS_PER_GROUP, len(files))
+        pwm = int(pd.read_csv(files[start])["PWM"].iloc[0])
+        groups.append((start, end, pwm))
+    return groups
+
+
+def merge(start: int, end: int) -> pd.DataFrame:
+    merged = pd.DataFrame()
     for i in range(start, end):
-        output_data_path = path_1 + "Test_" + str(i)  + ".csv"
-        df = pd.read_csv(output_data_path)
-        ang_name = "Angles_" + str(i%5)
-        t_name = "Time_" + str(i%5)
-
-        df_2[ang_name] = df["Angles"]
-        df_2[t_name] = df["Time_s"]
-        df_2["PWM"] = df['PWM']
-    return df_2
-
-# fig_title = "Експеримент 1"
-fig_title = "Експеримент 2"  # uncoment for test 2 
-df_n60 = merge(start=0, end=5)
-df_n45 = merge(start=5, end=10)
-df_n30 = merge(start=10, end=15)
-df_30 = merge(start=15, end=20)
-df_45 = merge(start=20, end=25)  # uncoment for test 2
-df_60 = merge(start=25, end=30)  # uncoment for test 2 
+        df = pd.read_csv(DATA_DIR / f"Test_{i}.csv")
+        col = i % TESTS_PER_GROUP
+        merged[f"Angles_{col}"] = df["Angles"]
+        merged[f"Time_{col}"] = df["Time_s"]
+        merged[f"PWM_{col}"] = df["PWM"]
+    return merged
 
 
-# fig, axs = plt.subplots(4,5)
-fig, axs = plt.subplots(6,5)
-fig.suptitle(fig_title)
-axs[0, 0].plot(df_n60["Time_0"], df_n60["Angles_0"], df_n60["Time_0"], df_n60['PWM'])
-axs[0, 1].plot(df_n60["Time_1"], df_n60["Angles_1"], df_n60["Time_1"], df_n60['PWM'])
-axs[0, 2].plot(df_n60["Time_2"], df_n60["Angles_2"], df_n60["Time_2"], df_n60['PWM'])
-axs[0, 3].plot(df_n60["Time_3"], df_n60["Angles_3"], df_n60["Time_3"], df_n60['PWM'])
-axs[0, 4].plot(df_n60["Time_4"], df_n60["Angles_4"], df_n60["Time_4"], df_n60['PWM'])
-axs[0,0].set_title(str(int(df_n60['PWM'].iloc[0])) + "$^\circ$")
-axs[0,1].set_title(str(int(df_n60['PWM'].iloc[0])) + "$^\circ$")
-axs[0,2].set_title(str(int(df_n60['PWM'].iloc[0])) + "$^\circ$")
-axs[0,3].set_title(str(int(df_n60['PWM'].iloc[0])) + "$^\circ$")
-axs[0,4].set_title(str(int(df_n60['PWM'].iloc[0])) + "$^\circ$")
-
-axs[1, 0].plot(df_n45["Time_0"], df_n45["Angles_0"], df_n45["Time_0"], df_n45['PWM'])
-axs[1, 1].plot(df_n45["Time_1"], df_n45["Angles_1"], df_n45["Time_1"], df_n45['PWM'])
-axs[1, 2].plot(df_n45["Time_2"], df_n45["Angles_2"], df_n45["Time_2"], df_n45['PWM'])
-axs[1, 3].plot(df_n45["Time_3"], df_n45["Angles_3"], df_n45["Time_3"], df_n45['PWM'])
-axs[1, 4].plot(df_n45["Time_4"], df_n45["Angles_4"], df_n45["Time_4"], df_n45['PWM'])
-axs[1,0].set_title(str(int(df_n45['PWM'].iloc[0])) + "$^\circ$")
-axs[1,1].set_title(str(int(df_n45['PWM'].iloc[0])) + "$^\circ$")
-axs[1,2].set_title(str(int(df_n45['PWM'].iloc[0])) + "$^\circ$")
-axs[1,3].set_title(str(int(df_n45['PWM'].iloc[0])) + "$^\circ$")
-axs[1,4].set_title(str(int(df_n45['PWM'].iloc[0])) + "$^\circ$")
-
-# plt.show()
-
-# fig, axs = plt.subplots(2,5)
-# fig.suptitle(fig_title)
-
-axs[2, 0].plot(df_n30["Time_0"], df_n30["Angles_0"], df_n30["Time_0"], df_n30['PWM'])
-axs[2, 1].plot(df_n30["Time_1"], df_n30["Angles_1"], df_n30["Time_1"], df_n30['PWM'])
-axs[2, 2].plot(df_n30["Time_2"], df_n30["Angles_2"], df_n30["Time_2"], df_n30['PWM'])
-axs[2, 3].plot(df_n30["Time_3"], df_n30["Angles_3"], df_n30["Time_3"], df_n30['PWM'])
-axs[2, 4].plot(df_n30["Time_4"], df_n30["Angles_4"], df_n30["Time_4"], df_n30['PWM'])
-axs[2,0].set_title(str(int(df_n30['PWM'].iloc[0])) + "$^\circ$")
-axs[2,1].set_title(str(int(df_n30['PWM'].iloc[0])) + "$^\circ$")
-axs[2,2].set_title(str(int(df_n30['PWM'].iloc[0])) + "$^\circ$")
-axs[2,3].set_title(str(int(df_n30['PWM'].iloc[0])) + "$^\circ$")
-axs[2,4].set_title(str(int(df_n30['PWM'].iloc[0])) + "$^\circ$")
-
-axs[3, 0].plot(df_30["Time_0"], df_30["Angles_0"], df_30["Time_0"], df_30['PWM'])
-axs[3, 1].plot(df_30["Time_1"], df_30["Angles_1"], df_30["Time_1"], df_30['PWM'])
-axs[3, 2].plot(df_30["Time_2"], df_30["Angles_2"], df_30["Time_2"], df_30['PWM'])
-axs[3, 3].plot(df_30["Time_3"], df_30["Angles_3"], df_30["Time_3"], df_30['PWM'])
-axs[3, 4].plot(df_30["Time_4"], df_30["Angles_4"], df_30["Time_4"], df_30['PWM'])
-axs[3,0].set_title(str(int(df_30['PWM'].iloc[0])) + "$^\circ$")
-axs[3,1].set_title(str(int(df_30['PWM'].iloc[0])) + "$^\circ$")
-axs[3,2].set_title(str(int(df_30['PWM'].iloc[0])) + "$^\circ$")
-axs[3,3].set_title(str(int(df_30['PWM'].iloc[0])) + "$^\circ$")
-axs[3,4].set_title(str(int(df_30['PWM'].iloc[0])) + "$^\circ$")
+def plot_group(ax_row, df: pd.DataFrame, *, show_x: bool, show_y_left: bool) -> None:
+    for col in range(TESTS_PER_GROUP):
+        ax = ax_row[col]
+        time = df[f"Time_{col}"]
+        ax.plot(time, df[f"Angles_{col}"], time, df[f"PWM_{col}"])
+        ax.grid(True)
+        if show_x:
+            ax.set_xlabel(TIME_LABEL)
+        if show_y_left and col == 0:
+            ax.set_ylabel(ANGLE_LABEL)
 
 
+def plot_page(groups: list[tuple[int, int, int]], page_idx: int) -> plt.Figure:
+    datasets = [merge(start, end) for start, end, _pwm in groups]
+    n_rows = len(datasets)
+
+    # Landscape A4: wider figure for 5 columns of subplots.
+    fig, axs = plt.subplots(
+        n_rows,
+        TESTS_PER_GROUP,
+        squeeze=False,
+        figsize=(TEXT_WIDTH_IN * 1.45, row_height(n_rows) * n_rows),
+    )
+
+    for row_idx, df in enumerate(datasets):
+        plot_group(
+            axs[row_idx],
+            df,
+            show_x=row_idx == n_rows - 1,
+            show_y_left=True,
+        )
+
+    fig.tight_layout()
+
+    if SAVE_FIGURES:
+        save_figure(fig, OUTPUT_DIR / f"test_1_page_{page_idx + 1}")
+
+    return fig
 
 
-# For test 2 uncoment part bellow 
+def main() -> None:
+    apply_style()
+
+    groups = discover_groups(DATA_DIR)
+    if GROUP_INDICES is not None:
+        groups = [groups[i] for i in GROUP_INDICES]
+
+    pages = [
+        groups[i : i + ROWS_PER_PAGE]
+        for i in range(0, len(groups), ROWS_PER_PAGE)
+    ]
+
+    for page_idx, page_groups in enumerate(pages):
+        plot_page(page_groups, page_idx)
+
+    if SHOW_PLOT:
+        plt.show()
 
 
-# fig, axs = plt.subplots(2,5)
-# fig.suptitle(fig_title)
-
-axs[4, 0].plot(df_45["Time_0"], df_45["Angles_0"], df_45["Time_0"], df_45['PWM'])
-axs[4, 1].plot(df_45["Time_1"], df_45["Angles_1"], df_45["Time_1"], df_45['PWM'])
-axs[4, 2].plot(df_45["Time_2"], df_45["Angles_2"], df_45["Time_2"], df_45['PWM'])
-axs[4, 3].plot(df_45["Time_3"], df_45["Angles_3"], df_45["Time_3"], df_45['PWM'])
-axs[4, 4].plot(df_45["Time_4"], df_45["Angles_4"], df_45["Time_4"], df_45['PWM'])
-axs[4,0].set_title(str(int(df_45['PWM'].iloc[0])) + "$^\circ$")
-axs[4,1].set_title(str(int(df_45['PWM'].iloc[0])) + "$^\circ$")
-axs[4,2].set_title(str(int(df_45['PWM'].iloc[0])) + "$^\circ$")
-axs[4,3].set_title(str(int(df_45['PWM'].iloc[0])) + "$^\circ$")
-axs[4,4].set_title(str(int(df_45['PWM'].iloc[0])) + "$^\circ$")
-
-
-axs[5, 0].plot(df_60["Time_0"], df_60["Angles_0"], df_60["Time_0"], df_60['PWM'])
-axs[5, 1].plot(df_60["Time_1"], df_60["Angles_1"], df_60["Time_1"], df_60['PWM'])
-axs[5, 2].plot(df_60["Time_2"], df_60["Angles_2"], df_60["Time_2"], df_60['PWM'])
-axs[5, 3].plot(df_60["Time_3"], df_60["Angles_3"], df_60["Time_3"], df_60['PWM'])
-axs[5, 4].plot(df_60["Time_4"], df_60["Angles_4"], df_60["Time_4"], df_60['PWM'])
-axs[5,0].set_title(str(int(df_60['PWM'].iloc[0])) + "$^\circ$")
-axs[5,1].set_title(str(int(df_60['PWM'].iloc[0])) + "$^\circ$")
-axs[5,2].set_title(str(int(df_60['PWM'].iloc[0])) + "$^\circ$")
-axs[5,3].set_title(str(int(df_60['PWM'].iloc[0])) + "$^\circ$")
-axs[5,4].set_title(str(int(df_60['PWM'].iloc[0])) + "$^\circ$")
-
-
-plt.show()
-
+if __name__ == "__main__":
+    main()
