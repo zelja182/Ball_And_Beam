@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal as si
 
 
 def show_plot(time_s, angle, pwm, idx):
@@ -32,9 +31,6 @@ exp_value_1 = [-45, -30, -20, -10, 10, 20, 30, 45]
 
 j = -1
 
-'''
-Odredjivanje Relativne greske
-'''
 for i in range(15):
     if not i%5:
         j = j + 1
@@ -47,7 +43,7 @@ for i in range(15):
         df["Angles"] = df["Counts"]*360.0/600.0
         time_s = df["Time"].to_numpy()
         df["Time_s"] = np.round(time_s/1000000, 2)
-        # df["PWM"] = np.full(len(df["Angles"]), exp_value_1[j])
+        # df["PWM"] = np.full(len(df["Angles"]), exp_value_1[j])  # coment this line for test 2
         df.drop("Time", axis=1, inplace=True)
         df.drop("Counts", axis=1, inplace=True)
         df.to_csv(path_1 + "Test_" + str(i) + ".csv")
