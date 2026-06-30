@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal as si
 
 
 def show_plot(time_s, angle, pwm, idx):
