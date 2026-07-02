@@ -215,7 +215,7 @@ def make_new_table(columns_to_drop=None, top_n=5):
     df, unique, mse_cols, rank_cols = prepare_ranked_models(columns_to_drop)
     print_ranking_summary(unique, mse_cols, columns_to_drop, total_models=len(df))
     top_models = print_top_models(unique, rank_cols, top_n=top_n)
-    save_ranked_table(df)   # comment this out if you want to print the top N models only
+    # save_ranked_table(df)   # comment this out if you want to print the top N models only
     return top_models
 
 
