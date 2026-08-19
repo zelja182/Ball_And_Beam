@@ -17,9 +17,9 @@ const float TOLERANCE_MM = 5.0f;
 const unsigned long LOOP_MS = 50;
 
 // Paste from MATLAB after tuning
-float Kp = -1.0f;  // -2.0f;
-float Ki = -1.0f;  // -0.01f;
-float Kd = -1.f;  //-0.7f;
+float Kp = -2.0f;
+float Ki = -0.01f;
+float Kd = -0.7f;
 
 bool running = false;
 float distance_mm = 0.0f;
@@ -51,11 +51,11 @@ void readDistance() {
 }
 
 float pidStep(float error) {
-  // if (fabs(error) <= TOLERANCE_MM) {
-  //   integral = 0.0f;
-  //   prev_error = 0.0f;
-  //   return 0.0f;
-  // }
+  if (fabs(error) <= TOLERANCE_MM) {
+    integral = 0.0f;
+    prev_error = 0.0f;
+    return 0.0f;
+  }
 
   const float dt = LOOP_MS / 1000.0f;
 
@@ -63,7 +63,7 @@ float pidStep(float error) {
   float D = Kd * (error - prev_error) / dt;
   prev_error = error;
 
-  beam_deg = constrain(Kp * error, BEAM_MIN, BEAM_MAX); //constrain(Kp * error + Ki * integral + D, BEAM_MIN, BEAM_MAX);
+  beam_deg = constrain(Kp * error + Ki * integral + D, BEAM_MIN, BEAM_MAX);
   return beam_deg;
 }
 
