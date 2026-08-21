@@ -1,7 +1,7 @@
 """Collect ball-and-beam serial data and save it as CSV.
 
 Arduino protocol (Ball_and_Beam_final_1.ino):
-  - banner: "Ball and Beam v1", "G = start, S = stop", header
+  - banner: "Ball and Beam v1 (PD)", "G = start, S = stop", header
   - send 'G' to start  -> board prints RUN then CSV rows
   - send 'S' to stop   -> board prints STOP
   - data: time_ms,distance_mm,beam_deg
@@ -103,7 +103,10 @@ def collect_until_stop(ser: serial.Serial) -> list[tuple[int, int, float]]:
             if line == "STOP":
                 print(line)
                 break
-            if line in {"RUN", "Ball and Beam v1"} or line.startswith("G = start"):
+            if (
+                line in {"RUN", "Ball and Beam v1", "Ball and Beam v1 (PD)"}
+                or line.startswith("G = start")
+            ):
                 print(line)
                 continue
             if line.startswith("time_ms"):

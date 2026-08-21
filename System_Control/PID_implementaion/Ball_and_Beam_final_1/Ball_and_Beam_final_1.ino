@@ -11,20 +11,17 @@ const float BEAM_MAX =  45.0f;
 Servo beamServo;
 Adafruit_VL53L0X lox;
 
-// ---------- Control ----------
+// ---------- Control (tuned in Simulink; Ki omitted -> PD) ----------
 const float SETPOINT_MM = 250.0f;
 const float TOLERANCE_MM = 5.0f;
 const unsigned long LOOP_MS = 50;
 
-// Paste from MATLAB after tuning
-float Kp = -2.0f;
-float Ki = -0.01f;
+float Kp = -2.2f;
 float Kd = -0.7f;
 
 bool running = false;
 float distance_mm = 0.0f;
 float beam_deg = 0.0f;
-float integral = 0.0f;
 float prev_error = 0.0f;
 unsigned long t0_ms = 0;
 
@@ -50,20 +47,17 @@ void readDistance() {
   }
 }
 
-float pidStep(float error) {
+float pdStep(float error) {
   if (fabs(error) <= TOLERANCE_MM) {
-    integral = 0.0f;
     prev_error = 0.0f;
     return 0.0f;
   }
 
   const float dt = LOOP_MS / 1000.0f;
-
-  integral += error * dt;
   float D = Kd * (error - prev_error) / dt;
   prev_error = error;
 
-  beam_deg = constrain(Kp * error + Ki * integral + D, BEAM_MIN, BEAM_MAX);
+  beam_deg = constrain(Kp * error + D, BEAM_MIN, BEAM_MAX);
   return beam_deg;
 }
 
@@ -81,7 +75,7 @@ void setup() {
     delay(1);
   }
 
-  beamServo.attach(5);
+  beamServo.attach(SERVO_PIN);
   holdNeutral();
 
   if (!lox.begin()) {
@@ -93,7 +87,7 @@ void setup() {
 
   lox.startRangeContinuous();
 
-  Serial.println(F("Ball and Beam v1"));
+  Serial.println(F("Ball and Beam v1 (PD)"));
   Serial.println(F("G = start, S = stop"));
   Serial.println(F("time_ms,distance_mm,beam_deg"));
 }
@@ -108,7 +102,6 @@ void loop() {
     if (cmd == 'G' || cmd == 'g') {
       running = true;
       t0_ms = millis();
-      integral = 0.0f;
       prev_error = 0.0f;
       holdNeutral();
       Serial.println(F("RUN"));
@@ -126,7 +119,7 @@ void loop() {
   readDistance();
 
   float error = SETPOINT_MM - distance_mm;
-  setBeamAngle(pidStep(error));
+  setBeamAngle(pdStep(error));
   logData();
 
   delay(LOOP_MS);
