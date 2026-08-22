@@ -13,16 +13,21 @@ Adafruit_VL53L0X lox;
 
 // ---------- Control ----------
 const float SETPOINT_MM = 250.0f;
-const float TOLERANCE_MM = 5.0f;
 const unsigned long LOOP_MS = 50;
 
+// First-order low-pass on the distance reading. The D term differentiates
+// sensor noise, so a larger tau means a calmer servo but more phase lag.
+const float FILTER_TAU_S = 0.12f;
+
 // Paste from MATLAB after tuning
-float Kp = -1.2f;
-float Ki = -0.01f;
-float Kd = -0.7f;
+float Kp = -2.0f;
+float Ki = -0.09f;
+float Kd = -1.5f;
 
 bool running = false;
 float distance_mm = 0.0f;
+float distance_filt_mm = 0.0f;
+bool filter_ready = false;
 float beam_deg = 0.0f;
 float integral = 0.0f;
 float prev_error = 0.0f;
@@ -45,29 +50,47 @@ void readDistance() {
   }
 
   uint16_t raw = lox.readRange();
-  if (raw != 65535) {
-    distance_mm = (float)raw;
+  if (raw == 65535) {
+    return;
   }
-}
 
-float pidStep(float error) {
-  if (fabs(error) <= TOLERANCE_MM) {
-    integral = 0.0f;
-    prev_error = 0.0f;
-    return 0.0f;
+  distance_mm = (float)raw;
+
+  if (!filter_ready) {
+    distance_filt_mm = distance_mm;
+    filter_ready = true;
+    return;
   }
 
   const float dt = LOOP_MS / 1000.0f;
+  const float alpha = dt / (FILTER_TAU_S + dt);
+  distance_filt_mm += alpha * (distance_mm - distance_filt_mm);
+}
 
-  integral += error * dt;
+float pidStep(float error) {
+  const float dt = LOOP_MS / 1000.0f;
+
   float D = Kd * (error - prev_error) / dt;
   prev_error = error;
 
-  beam_deg = constrain(Kp * error + Ki * integral + D, BEAM_MIN, BEAM_MAX);
+  float u = Kp * error + Ki * integral + D;
+
+  // Anti-windup by conditional integration: keep the integral frozen while the
+  // command sits at a limit and the new contribution would push further out.
+  float delta_i = Ki * error * dt;
+  bool winding_up = (u >= BEAM_MAX && delta_i > 0.0f) ||
+                    (u <= BEAM_MIN && delta_i < 0.0f);
+  if (!winding_up) {
+    integral += error * dt;
+    u = Kp * error + Ki * integral + D;
+  }
+
+  beam_deg = constrain(u, BEAM_MIN, BEAM_MAX);
   return beam_deg;
 }
 
 void logData() {
+  // Raw distance is logged so the filter can be reproduced offline.
   Serial.print(millis() - t0_ms);
   Serial.print(',');
   Serial.print((int)lround(distance_mm));
@@ -81,7 +104,7 @@ void setup() {
     delay(1);
   }
 
-  beamServo.attach(5);
+  beamServo.attach(SERVO_PIN);
   holdNeutral();
 
   if (!lox.begin()) {
@@ -93,7 +116,7 @@ void setup() {
 
   lox.startRangeContinuous();
 
-  Serial.println(F("Ball and Beam v1"));
+  Serial.println(F("Ball and Beam v2 (LPF)"));
   Serial.println(F("G = start, S = stop"));
   Serial.println(F("time_ms,distance_mm,beam_deg"));
 }
@@ -110,6 +133,7 @@ void loop() {
       t0_ms = millis();
       integral = 0.0f;
       prev_error = 0.0f;
+      filter_ready = false;
       holdNeutral();
       Serial.println(F("RUN"));
     } else if (cmd == 'S' || cmd == 's') {
@@ -125,7 +149,7 @@ void loop() {
 
   readDistance();
 
-  float error = SETPOINT_MM - distance_mm;
+  float error = SETPOINT_MM - distance_filt_mm;
   setBeamAngle(pidStep(error));
   logData();
 
