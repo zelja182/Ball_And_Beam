@@ -19,9 +19,9 @@ plt.rcParams.update(
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Data")
 FIG_DIR = os.path.join(DATA_DIR, "Slike")
-CSV_PATH = os.path.join(DATA_DIR, "pid_sweep_Ki.csv")
+CSV_PATH = os.path.join(DATA_DIR, "pid_sweep_r_0.csv")
 SETPOINT_MM = 250.0
-SWEEP_COLS = ("Kp", "Ki", "Kd")
+SWEEP_COLS = ("Kp", "Ki", "Kd", "r_0")
 
 # Thesis figures: keep only representative sweep values (None = plot all).
 SELECTED_VALUES = {
@@ -33,7 +33,7 @@ SELECTED_VALUES = {
 
 def detect_sweep_param(df: pd.DataFrame) -> str:
     for name in SWEEP_COLS:
-        if df[name].nunique() > 1:
+        if name in df.columns and df[name].nunique() > 1:
             return name
     return "Kd"
 
@@ -115,9 +115,13 @@ def plot_sweep(df: pd.DataFrame, out_path: str, use_filter: bool = False) -> Non
 
     ax_pos_g.legend(loc="best", fontsize=8)
 
-    fixed = [name for name in SWEEP_COLS if name != sweep_param]
+    fixed = [name for name in ("Kp", "Ki", "Kd") if name in df.columns and name != sweep_param]
     fixed_txt = ", ".join(f"{name} = {df[name].iloc[0]:g}" for name in fixed)
-    fig.suptitle(f"Симулација PID, промена {sweep_param} ({fixed_txt})")
+    if sweep_param == "r_0":
+        title = f"Симулација PID, промена почетног положаја $r_0$ ({fixed_txt})"
+    else:
+        title = f"Симулација PID, промена {sweep_param} ({fixed_txt})"
+    fig.suptitle(title)
     fig.tight_layout()
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     print(f"Saved {out_path}")

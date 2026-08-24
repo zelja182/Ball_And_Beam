@@ -1,11 +1,14 @@
 % Sweep Kp, Ki or Kd in PID_systems.slx and save responses to CSV.
 % Plot later with plot_pid_sweep.py.
 %
+% Set r_0 to the initial ball position [mm]. In the model, set the ball
+% position Integrator Initial condition to the workspace variable r_0.
+%
 % Model layout (same file):
 %   top    = nonlinear ball + grey-box servo TF
 %   bottom = nonlinear ball + black-box (Nonlinear ARX) servo
-% Both loops share workspace gains Kp, Ki, Kd.
-% To Workspace (timeseries, Mux = [servo_angle; ball_position]):
+%   Both loops share workspace gains Kp, Ki, Kd and initial position r_0.
+%   To Workspace (timeseries, Mux = [servo_angle; ball_position]):
 %   grey_box_data, black_box_data
 
 close all
@@ -15,12 +18,13 @@ model = 'PID_systems';
 grey_var = 'grey_box_data';
 black_var = 'black_box_data';
 
-sweep_param = 'Ki';          % only this gain is iterated
-sweep_values = [-0.001, -0.005, -0.007, -0.01, -0.03, -0.5, -0.7, -0.1, -0.4, -0.7, -1.0, -1.5, -1.8, -2, -5];
+sweep_param = 'r_0';          % only this gain is iterated
+sweep_values = [380, 379, 71, 70];
 
-Kp = -2.2;                     % held constant
-Ki = 0;                      % held constant
+Kp = -1.2;                     % held constant
+Ki = -0.01;                      % held constant
 Kd = -0.7;                      % overwritten each loop by sweep_values
+r_0 = 378;                     % initial ball position [mm]; set Integrator IC to r_0 in the model
 stop_time = 15;
 
 this_dir = fileparts(mfilename('fullpath'));
@@ -63,6 +67,7 @@ for k = 1:numel(sweep_values)
     assignin('base', 'Kp', Kp);
     assignin('base', 'Ki', Ki);
     assignin('base', 'Kd', Kd);
+    assignin('base', 'r_0', r_0);
     assignin('base', sweep_param, sweep_values(k));
 
     sim(model);
@@ -76,6 +81,7 @@ for k = 1:numel(sweep_values)
     Kp_run = Kp;
     Ki_run = Ki;
     Kd_run = Kd;
+    r0_run = r_0;
     switch sweep_param
         case 'Kp'
             Kp_run = sweep_values(k);
@@ -83,6 +89,8 @@ for k = 1:numel(sweep_values)
             Ki_run = sweep_values(k);
         case 'Kd'
             Kd_run = sweep_values(k);
+        case 'r_0'
+            r0_run = sweep_values(k);
     end
 
     n_samples = numel(t);
@@ -91,9 +99,10 @@ for k = 1:numel(sweep_values)
         repmat(Kp_run, n_samples, 1), ...
         repmat(Ki_run, n_samples, 1), ...
         repmat(Kd_run, n_samples, 1), ...
+        repmat(r0_run, n_samples, 1), ...
         'VariableNames', { ...
             'time_s', 'ball_grey', 'servo_grey', ...
-            'ball_black', 'servo_black', 'Kp', 'Ki', 'Kd'});
+            'ball_black', 'servo_black', 'Kp', 'Ki', 'Kd', 'r_0'});
     all_rows = [all_rows; run_rows]; %#ok<AGROW>
 end
 

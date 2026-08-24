@@ -21,9 +21,9 @@ import serial.tools.list_ports
 PORT = "COM6"
 BAUD = 115200
 TIMEOUT_S = 1.0
-RUN_DURATION_S = 15.0
-RUN_COUNT = 10
-SAVE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Data")
+RUN_DURATION_S = 25.0
+RUN_COUNT = 5
+SAVE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Data/Data_experiment_2")
 
 
 def list_ports() -> None:

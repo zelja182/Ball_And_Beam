@@ -1,0 +1,13 @@
+n_int=6
+PID_systems/Ball and beam/r | IC=378
+PID_systems/Ball and beam/r dot | IC=0
+PID_systems/Ball and beam1/r | IC=378
+PID_systems/Ball and beam1/r dot | IC=0
+PID_systems/Integrator | IC=0
+PID_systems/Integrator1 | IC=0
+BLK PID_systems/Ball and beam | type=SubSystem
+BLK PID_systems/Ball and beam/Ball position | type=Outport
+BLK PID_systems/Ball and beam1 | type=SubSystem
+BLK PID_systems/Ball and beam1/Ball position | type=Outport
+BLK PID_systems/Integrator | type=Integrator
+BLK PID_systems/Integrator1 | type=Integrator
